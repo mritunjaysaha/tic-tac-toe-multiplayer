@@ -1,0 +1,21 @@
+.footer {
+    // position: fixed;
+    // bottom: 0;
+    width: 100vw;
+    height: 5vh;
+    background: #16161d;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fafafa;
+    p {
+        font-size: 1em;
+        line-height: 1em;
+
+        a {
+            color: $ScoreText;
+            text-decoration: none;
+        }
+    }
+}

@@ -1,0 +1,64 @@
+.header-score-container {
+    display: flex;
+    width: $board-size;
+    justify-content: space-between;
+    margin-bottom: 1em;
+    border: 2px solid $HeaderOutline;
+    padding: 1em;
+    border-radius: 5px;
+    margin: 4vh 0;
+
+    @include respond(mobile) {
+        width: $board-size-small;
+        padding: 0.5em;
+    }
+
+    .header-score-contents {
+        background: $ScoreBg;
+        text-align: center;
+        padding: 1em 0;
+        width: 8em;
+        border-radius: $border-radius;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 1.5em;
+
+        .score-text-player {
+            text-transform: uppercase;
+            color: $ScoreText;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin: 0;
+        }
+        .score {
+            font-weight: 700;
+            color: $DarkText;
+            margin: 0;
+        }
+
+        @include respond(mobile) {
+            // padding: 0.5em 0;
+            font-size: 1em;
+        }
+    }
+
+    .logo {
+        text-transform: uppercase;
+        background: none;
+        text-align: left;
+        color: #fafafa;
+        font-size: 1.5em;
+        padding: 0;
+        letter-spacing: 0.2em;
+        font-weight: 700;
+        p {
+            margin: 0;
+        }
+
+        @include respond(mobile) {
+            font-size: 1em;
+        }
+    }
+}

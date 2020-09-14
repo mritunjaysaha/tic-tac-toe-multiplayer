@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+
+<body>
+
+    <header class="header-score-container">
+        <section class="header-score-contents">
+            <p class="score-text-player">you</p>
+            <h3 class="score" id="player-score">00</h3>
+        </section>
+        <section class="header-score-contents logo">
+            <p>tic</p>
+            <p>tac</p>
+            <p>toe</p>
+        </section>
+        <section class="header-score-contents">
+            <p class="score-text-player">house</p>
+            <h3 class="score" id="house-score">00</h3>
+        </section>
+    </header>
+    <section id="board" class="section-board-container"></section>
+
+    <footer class="footer">
+        <p>Made by <a target="_blank" rel="noopener noreferrer" href="https://mritunjaysaha.netlify.app">Mritunjay</a>
+        </p>
+    </footer>
+
+    <!-- MODALS -->
+    <section id="modal">
+        <article id="modal-contents">
+            <h3 id="result">you won</h3>
+            <button id="btn-play-again">play again</button>
+        </article>
+    </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>

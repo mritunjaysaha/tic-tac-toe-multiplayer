@@ -1,0 +1,26 @@
+$board-size: 30em;
+$board-size-small: 90vw;
+$border-width: 0.1em;
+$border-radius: 5px;
+// Neutral
+
+$DarkText: hsl(229, 25%, 31%);
+$ScoreText: hsl(229, 64%, 46%);
+$HeaderOutline: hsl(217, 16%, 45%);
+$ScoreBg: #f3f4f5;
+
+$Shadow: hsl(217, 16%, 90%);
+
+// BACKGROUND
+$background-gradient: radial-gradient(
+    ellipse at top,
+    #2c5364,
+    #203a43,
+    #0f2027
+); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+$background: #0f2027; /* fallback for old browsers */
+
+// FONT SIZE
+$xo-fs: 8em;
+$xo-fs-sm: 4em;
