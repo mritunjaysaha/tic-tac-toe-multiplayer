@@ -12,12 +12,12 @@ html {
 
 body {
     margin: 0;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: space-between;
     width: 100vw;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     background: $background-gradient;
     font-family: "Barlow Semi Condensed", sans-serif;
     font-weight: 600;
@@ -30,4 +30,11 @@ i {
     @include respond(mobile) {
         font-size: $xo-fs-sm;
     }
+}
+
+#game-section {
+    display: none;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
 }

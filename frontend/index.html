@@ -4,30 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
     <link rel="stylesheet" href="./styles/main.css">
 </head>
 
 <body>
 
-    <header class="header-score-container">
-        <section class="header-score-contents">
-            <p class="score-text-player">you</p>
-            <h3 class="score" id="player-score">00</h3>
-        </section>
-        <section class="header-score-contents logo">
-            <p>tic</p>
-            <p>tac</p>
-            <p>toe</p>
-        </section>
-        <section class="header-score-contents">
-            <p class="score-text-player">house</p>
-            <h3 class="score" id="house-score">00</h3>
-        </section>
-    </header>
-    <section id="board" class="section-board-container"></section>
+    <section id="join-game-section">
 
+        <button id="btn-new-game">New Game</button>
+        <div>
+            <hr>
+            or
+            <hr>
+        </div>
+        <input id="input-join-game" placeholder="Enter Game code" type="text">
+        </form>
+    </section>
+
+    <section id="section-game-code" style="display: none;">
+        <h1>Your Game Code is: <span id="game-code"></span></h1>
+
+    </section>
+
+    <section id="game-section">
+        <header class="header-score-container">
+            <section class="header-score-contents">
+                <p class="score-text-player">you</p>
+                <h3 class="score" id="player-score">00</h3>
+            </section>
+            <section class="header-score-contents logo">
+                <p>tic</p>
+                <p>tac</p>
+                <p>toe</p>
+            </section>
+            <section class="header-score-contents">
+                <p class="score-text-player">house</p>
+                <h3 class="score" id="house-score">00</h3>
+            </section>
+        </header>
+        <section id="board" class="section-board-container"></section>
+
+    </section>
     <footer class="footer">
         <p>Made by <a target="_blank" rel="noopener noreferrer" href="https://mritunjaysaha.netlify.app">Mritunjay</a>
         </p>

@@ -1,8 +1,26 @@
 const socket = io("http://localhost:4000");
 
-socket.on("checkConnection", (message) => console.log(message));
+const joinGameSection = document.getElementById("join-game-section");
+const gameSection = document.getElementById("game-section");
+const sectionGameCode = document.getElementById("section-game-code");
 
+const btnNewGame = document.getElementById("btn-new-game");
+const inputJoinGame = document.getElementById("input-join-game");
+const btnJoinGame = document.getElementById("btn-join-game");
+const gameCodeDisplay = document.getElementById("game-code");
+
+socket.on("checkConnection", (message) => console.log(message));
+socket.on("gameCode", (gameCode) => {
+    gameCodeDisplay.innerText = gameCode;
+});
 socket.on("init", handleInit);
+
+btnNewGame.addEventListener("click", () => {
+    joinGameSection.style.display = "none";
+    sectionGameCode.style.display = "block";
+
+    socket.emit("newGame");
+});
 
 function handleInit() {
     init();
@@ -20,6 +38,10 @@ function init() {
         "#btn-play-again",
         "#result"
     );
+}
+
+function handleGameCode(gameCode) {
+    gameCode.innerText = gameCode;
 }
 
 class TicTacToe {
