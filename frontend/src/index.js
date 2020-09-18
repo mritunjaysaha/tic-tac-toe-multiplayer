@@ -1,5 +1,5 @@
-// const socket = io("http://localhost:4000");
-const socket = io("https://ttt-multiplayer-server.herokuapp.com/");
+const socket = io("http://localhost:4000");
+// const socket = io("https://ttt-multiplayer-server.herokuapp.com/");
 
 const joinGameSection = document.getElementById("join-game-section");
 const gameSection = document.getElementById("game-section");
