@@ -20,6 +20,7 @@ const clientRooms = {};
 
 io.on("connection", (client) => {
     client.on("newGame", handleNewGame);
+    client.on("joinGame", handleJoinGame);
 
     client.emit("checkConnection", "connected to server");
 
@@ -27,10 +28,21 @@ io.on("connection", (client) => {
 
     client.on("player1", (message) => console.log(message));
 
-    function handleNewGame() {
+    function handleJoinGame(code) {
+        console.log(code);
+    }
+
+    function handleNewGame(player) {
         const roomName = makeId();
         console.log(roomName);
+        console.log({ player });
         client.emit("gameCode", roomName);
+
+        clientRooms[client.id] = roomName;
+
+        client.join(roomName);
+        client.number = 1;
+        client.emit("init", 1);
     }
 });
 
