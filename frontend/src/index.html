@@ -4,30 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TicTacToe</title>
+    <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
-    <link rel="stylesheet" href="./main.css">
 </head>
 
 <body>
 
-    <header class="header-score-container">
-        <section class="header-score-contents">
-            <p class="score-text-player">you</p>
-            <h3 class="score" id="player-score">00</h3>
-        </section>
-        <section class="header-score-contents logo">
-            <p>tic</p>
-            <p>tac</p>
-            <p>toe</p>
-        </section>
-        <section class="header-score-contents">
-            <p class="score-text-player">house</p>
-            <h3 class="score" id="house-score">00</h3>
-        </section>
-    </header>
-    <section id="board" class="section-board-container"></section>
+    <section id="join-game-section">
 
+        <button id="btn-new-game">New Game</button>
+        <div>
+            <hr>
+            or
+            <hr>
+        </div>
+        <input id="input-join-game" placeholder="Enter Game code" type="text">
+        <button id="btn-join-game">Join Game</button>
+    </section>
+
+    <!-- Player-1 section -->
+    <section id="section-game-code-p1" style="display: none;">
+        <h1>Your Game Code is: <span id="game-code"></span></h1>
+
+        <p>Waiting for other player to join</p>
+    </section>
+
+    <!-- Player-2 section -->
+    <section id="section-game-code-p2">
+        <h1>Enter Game Code: </h1>
+        <input type="text">
+        <button id="btn-join-game-p2">Join Game</button>
+    </section>
+
+    <section id="game-section" style="display: none;">
+        <header class="header-score-container">
+            <section class="header-score-contents">
+                <p class="score-text-player">you</p>
+                <h3 class="score" id="player-score">00</h3>
+            </section>
+            <section class="header-score-contents logo">
+                <p>tic</p>
+                <p>tac</p>
+                <p>toe</p>
+            </section>
+            <section class="header-score-contents">
+                <p class="score-text-player">house</p>
+                <h3 class="score" id="house-score">00</h3>
+            </section>
+        </header>
+        <section id="board" class="section-board-container"></section>
+
+    </section>
     <footer class="footer">
         <p>Made by <a target="_blank" rel="noopener noreferrer" href="https://mritunjaysaha.netlify.app">Mritunjay</a>
         </p>
@@ -40,6 +67,9 @@
             <button id="btn-play-again">play again</button>
         </article>
     </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="./index.js"></script>
 </body>
 
