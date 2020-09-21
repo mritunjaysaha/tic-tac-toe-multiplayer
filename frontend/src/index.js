@@ -1,49 +1,4 @@
-const socket = io("http://localhost:4000");
-// const socket = io("https://ttt-multiplayer-server.herokuapp.com/");
-
-const joinGameSection = document.getElementById("join-game-section");
-const gameSection = document.getElementById("game-section");
-const sectionGameCode = document.getElementById("section-game-code");
-
-const btnNewGame = document.getElementById("btn-new-game");
-const inputJoinGame = document.getElementById("input-join-game");
-const btnJoinGame = document.getElementById("btn-join-game");
-const gameCodeDisplay = document.getElementById("game-code");
-
-socket.on("checkConnection", (message) => console.log(message));
-socket.on("gameCode", (gameCode) => {
-    gameCodeDisplay.innerText = gameCode;
-});
-socket.on("init", handleInit);
-
-btnNewGame.addEventListener("click", () => {
-    joinGameSection.style.display = "none";
-    sectionGameCode.style.display = "block";
-
-    socket.emit("newGame");
-});
-
-function handleInit() {
-    init();
-}
-
-function init() {
-    new TicTacToe(
-        "#board",
-        "#player-score",
-        "#house-score",
-        {
-            modal: "#modal",
-            contents: "#modal-contents",
-        },
-        "#btn-play-again",
-        "#result"
-    );
-}
-
-function handleGameCode(gameCode) {
-    gameCode.innerText = gameCode;
-}
+import "./styles/main.scss";
 
 class TicTacToe {
     /**
@@ -65,6 +20,8 @@ class TicTacToe {
         this.houseScoreEl = document.querySelector(houseScore);
         this.btnPlayAgain = document.querySelector(btnPlayAgain);
         this.winner = document.querySelector(winner);
+
+        console.log(this.modalContents, modal);
 
         this.winningCombinations = [
             [0, 1, 2],
@@ -168,21 +125,20 @@ class TicTacToe {
         this.playerCells.push(Number.parseInt(cell, 10));
         selectedCell.innerHTML = `<i class="uil uil-times-circle"></i>`;
 
-        socket.emit("player1", cell);
-        // this.checkWinner();
+        this.checkWinner();
 
-        // if (this.wonBy === "x") {
-        //     this.userScore++;
-        //     this.updateScore();
-        // }
+        if (this.wonBy === "x") {
+            this.userScore++;
+            this.updateScore();
+        }
 
-        // if (this.wonBy === "Draw") {
-        //     this.updateScore();
-        // }
+        if (this.wonBy === "Draw") {
+            this.updateScore();
+        }
 
-        // if (!this.winnerFound) {
-        //     this.decideHouseMove();
-        // }
+        if (!this.winnerFound) {
+            this.decideHouseMove();
+        }
     }
 
     decideHouseMove() {
@@ -272,3 +228,15 @@ class TicTacToe {
         this.el.appendChild(fragment);
     }
 }
+
+new TicTacToe(
+    "#board",
+    "#player-score",
+    "#house-score",
+    {
+        modal: "#modal",
+        contents: "#modal-contents",
+    },
+    "#btn-play-again",
+    "#result"
+);
