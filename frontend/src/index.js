@@ -1,6 +1,6 @@
 import "./styles/main.scss";
+import { TicTacToe } from "./tictactoe";
 import { Board } from "./board";
-
 const socket = io("http://localhost:4000");
 // const socket = io("https://ttt-multiplayer-server.herokuapp.com/");
 
@@ -49,7 +49,8 @@ function init() {
 
     gameSection.style.display = "flex";
 
-    new Board("#board");
+    // new Board("#board");
+    new TicTacToe("#board");
 }
 
 function handleGameCode(gameCode) {
