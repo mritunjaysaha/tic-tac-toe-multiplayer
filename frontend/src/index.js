@@ -49,9 +49,7 @@ function init() {
     gameSection.style.display = "flex";
     console.log({ playerNumber });
 
-    const xoro = playerNumber === 1 ? "x" : "o";
-
-    new TicTacToe("#board", xoro, socket);
+    new TicTacToe("#board", playerNumber, socket);
 }
 
 function handleGameCode(gameCode) {

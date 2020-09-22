@@ -4,13 +4,14 @@ export class TicTacToe extends Board {
     /**
      *
      * @param {String} el
-     * @param {String} xoro
+     * @param {Number} playerNumber
      * @param {[Object object]} socket
      */
-    constructor(el, xoro, socket) {
+    constructor(el, playerNumber, socket) {
         super(el);
 
-        this.xoro = xoro;
+        this.playerNumber = playerNumber;
+        this.xoro = this.playerNumber === 1 ? "x" : "o";
 
         this.socket = socket;
 
@@ -26,7 +27,7 @@ export class TicTacToe extends Board {
             const cellElement = document.querySelector(
                 `div[data-cell='${cell}']`
             );
-            this.socket.emit("move", cell);
+            this.socket.emit("move", cell, this.playerNumber);
             cellElement.innerText = this.xoro;
             console.log(cell, cellElement);
         });
