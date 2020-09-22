@@ -1,8 +1,21 @@
 import { Board } from "./board";
 
 export class TicTacToe extends Board {
-    constructor(el) {
+    /**
+     *
+     * @param {String} el
+     * @param {String} xoro
+     * @param {[Object object]} socket
+     */
+    constructor(el, xoro, socket) {
         super(el);
+
+        this.xoro = xoro;
+
+        this.socket = socket;
+
+        this.socket.emit("ttt", "here");
+
         this.bindEvents();
     }
 
@@ -10,7 +23,12 @@ export class TicTacToe extends Board {
         this.el.addEventListener("click", (e) => {
             const cell = e.target.dataset["cell"];
 
-            console.log(cell);
+            const cellElement = document.querySelector(
+                `div[data-cell='${cell}']`
+            );
+            this.socket.emit("move", cell);
+            cellElement.innerText = this.xoro;
+            console.log(cell, cellElement);
         });
     }
 }

@@ -28,6 +28,12 @@ io.on("connection", (client) => {
 
     client.on("player1", (message) => console.log(message));
 
+    client.on("move", handleMoves);
+
+    function handleMoves(cell) {
+        console.log(cell);
+    }
+
     function handleJoinGame(roomName) {
         const room = io.sockets.adapter.rooms[roomName];
         console.log(room);

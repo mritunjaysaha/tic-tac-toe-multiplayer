@@ -1,6 +1,6 @@
 import "./styles/main.scss";
 import { TicTacToe } from "./tictactoe";
-import { Board } from "./board";
+
 const socket = io("http://localhost:4000");
 // const socket = io("https://ttt-multiplayer-server.herokuapp.com/");
 
@@ -38,7 +38,6 @@ btnJoinGame.addEventListener("click", () => {
 
 function handleInit(player) {
     playerNumber = player;
-    console.log({ player });
     if (playerNumber) {
         init();
     }
@@ -48,9 +47,11 @@ function init() {
     joinGameSection.style.display = "none";
 
     gameSection.style.display = "flex";
+    console.log({ playerNumber });
 
-    // new Board("#board");
-    new TicTacToe("#board");
+    const xoro = playerNumber === 1 ? "x" : "o";
+
+    new TicTacToe("#board", xoro, socket);
 }
 
 function handleGameCode(gameCode) {

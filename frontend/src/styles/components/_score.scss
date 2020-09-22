@@ -6,7 +6,7 @@
     border: 2px solid $HeaderOutline;
     padding: 1em;
     border-radius: 5px;
-    margin: 4vh 0;
+    margin: 0 0 2vh 0;
 
     @include respond(mobile) {
         width: $board-size-small;

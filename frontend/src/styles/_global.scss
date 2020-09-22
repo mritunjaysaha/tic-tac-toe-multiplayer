@@ -8,6 +8,7 @@ html {
 *::after,
 *::before {
     box-sizing: inherit;
+    // overflow: hidden;
 }
 
 body {
@@ -34,4 +35,7 @@ i {
 
 .game-section {
     flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
 }
