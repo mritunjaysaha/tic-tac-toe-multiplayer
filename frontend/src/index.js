@@ -13,6 +13,8 @@ const inputJoinGame = document.getElementById("input-join-game");
 const btnJoinGame = document.getElementById("btn-join-game");
 const gameCodeDisplay = document.getElementById("game-code");
 
+let playerNumber;
+
 socket.on("checkConnection", (message) => console.log(message));
 socket.on("gameCode", (gameCode) => {
     gameCodeDisplay.innerText = gameCode;
@@ -27,20 +29,27 @@ btnNewGameP1.addEventListener("click", () => {
 });
 let code = "";
 inputJoinGame.addEventListener("change", (e) => {
-    console.log(e.target.value);
     code = e.target.value;
-    console.log(code);
 });
 
 btnJoinGame.addEventListener("click", () => {
     socket.emit("joinGame", code);
 });
 
-function handleInit() {
-    init();
+function handleInit(player) {
+    playerNumber = player;
+    console.log({ player });
+    if (playerNumber) {
+        init();
+    }
 }
 
 function init() {
+    joinGameSection.style.display = "none";
+
+    gameSection.style.display = "flex";
+
+    console.log("init");
     new TicTacToe(
         "#board",
         "#player-score",

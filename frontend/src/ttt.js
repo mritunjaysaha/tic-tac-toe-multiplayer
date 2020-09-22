@@ -19,8 +19,6 @@ export class TicTacToe {
         this.btnPlayAgain = document.querySelector(btnPlayAgain);
         this.winner = document.querySelector(winner);
 
-        console.log(this.modalContents, modal);
-
         this.winningCombinations = [
             [0, 1, 2],
             [3, 4, 5],

@@ -28,14 +28,19 @@ io.on("connection", (client) => {
 
     client.on("player1", (message) => console.log(message));
 
-    function handleJoinGame(code) {
-        console.log(code);
+    function handleJoinGame(roomName) {
+        const room = io.sockets.adapter.rooms[roomName];
+        console.log(room);
+
+        clientRooms[client.id] = roomName;
+        client.join(roomName);
+        client.number = 2;
+        client.emit("init", 2);
     }
 
-    function handleNewGame(player) {
+    function handleNewGame() {
         const roomName = makeId();
         console.log(roomName);
-        console.log({ player });
         client.emit("gameCode", roomName);
 
         clientRooms[client.id] = roomName;
