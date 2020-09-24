@@ -52,24 +52,27 @@ io.on("connection", (client) => {
 
     function handleJoinGame(roomName) {
         const room = io.sockets.adapter.rooms[roomName];
-        console.log(room);
+
+        console.log({ room });
 
         clientRooms[client.id] = roomName;
         client.join(roomName);
+
         client.number = 2;
         client.emit("init", 2);
     }
 
     function handleNewGame() {
         const roomName = makeId();
-        console.log(roomName);
-        client.emit("gameCode", roomName);
 
         clientRooms[client.id] = roomName;
+        client.emit("gameCode", roomName);
 
         client.join(roomName);
         client.number = 1;
         client.emit("init", 1);
+
+        console.log("client rooms: ", clientRooms[roomName]);
     }
 });
 

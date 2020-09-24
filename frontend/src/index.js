@@ -8,63 +8,55 @@ export class App {
         this.sectionGameCodeP1 = document.getElementById(
             "section-game-code-p1"
         );
-
         this.btnNewGameP1 = document.getElementById("btn-new-game");
         this.inputJoinGame = document.getElementById("input-join-game");
         this.btnJoinGame = document.getElementById("btn-join-game");
         this.gameCodeDisplay = document.getElementById("game-code");
+
+        this.socket = io("http://localhost:4000");
+        this.playerNumber = 0;
+        this.code;
 
         this.start();
         this.bindEvents();
     }
 
     start() {
-        let socket = io("http://localhost:4000");
-
-        let playerNumber;
-
-        socket.on("checkConnection", (message) => console.log(message));
-        socket.on("gameCode", (gameCode) => {
-            gameCodeDisplay.innerText = gameCode;
+        this.socket.on("checkConnection", (message) => console.log(message));
+        this.socket.on("gameCode", (gameCode) => {
+            this.gameCodeDisplay.innerText = gameCode;
         });
-        socket.on("init", handleInit);
-
-        function handleInit(player) {
-            playerNumber = player;
-            if (playerNumber) {
-                init();
+        this.socket.on("init", (player) => {
+            this.playerNumber = player;
+            if (this.playerNumber) {
+                this.init();
             }
-        }
-
-        function init() {
-            joinGameSection.style.display = "none";
-
-            gameSection.style.display = "flex";
-            console.log({ playerNumber });
-
-            new TicTacToe("#board", playerNumber, socket);
-        }
-
-        function handleGameCode(gameCode) {
-            gameCode.innerText = gameCode;
-        }
+        });
     }
 
     bindEvents() {
         this.btnNewGameP1.addEventListener("click", () => {
-            joinGameSection.style.display = "none";
-            sectionGameCodeP1.style.display = "block";
+            this.joinGameSection.style.display = "none";
+            this.sectionGameCodeP1.style.display = "block";
 
-            socket.emit("newGame");
+            this.socket.emit("newGame");
         });
 
         this.inputJoinGame.addEventListener("change", (e) => {
-            code = e.target.value;
+            this.code = e.target.value;
         });
 
         this.btnJoinGame.addEventListener("click", () => {
-            socket.emit("joinGame", code);
+            this.socket.emit("joinGame", code);
         });
+    }
+
+    init() {
+        this.joinGameSection.style.display = "none";
+
+        this.gameSection.style.display = "flex";
+
+        new TicTacToe("#board", this.playerNumber, this.socket);
     }
 }
 
