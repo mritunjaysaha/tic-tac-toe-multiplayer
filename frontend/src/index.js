@@ -26,6 +26,7 @@ export class App {
         this.socket.on("gameCode", (gameCode) => {
             this.gameCodeDisplay.innerText = gameCode;
         });
+
         this.socket.on("init", (player) => {
             this.playerNumber = player;
             if (this.playerNumber) {

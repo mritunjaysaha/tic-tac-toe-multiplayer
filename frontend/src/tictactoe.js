@@ -8,7 +8,7 @@ export class TicTacToe extends Board {
      * @param {[Object object]} socket
      */
     constructor(el, playerNumber, socket) {
-        super(el);
+        super(el, 3, 3);
 
         this.playerNumber = playerNumber;
         this.xoro = this.playerNumber === 1 ? "x" : "o";
