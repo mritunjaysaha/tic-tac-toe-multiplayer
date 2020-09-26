@@ -38,16 +38,15 @@ io.on("connection", (client) => {
 
     client.emit("init");
 
-    client.on("player1", (message) => console.log(message));
-
-    client.on("move", handleMoves);
+    client.on("moves", handleMoves);
 
     function handleMoves(cell, playerNumber) {
-        console.log(cell, playerNumber);
+        console.log(typeof playerNumber);
+        if (playerNumber === 1) {
+            clientRooms.selectedCell[cell] = playerNumber;
+        }
 
-        selectedCell[cell] = playerNumber;
-
-        console.log(selectedCell);
+        console.log(clientRooms);
     }
 
     function handleJoinGame(roomName) {
@@ -72,7 +71,9 @@ io.on("connection", (client) => {
         client.number = 1;
         client.emit("init", 1);
 
-        console.log("client rooms: ", clientRooms[roomName]);
+        clientRooms.selectedCell = new Array(9);
+
+        console.log(clientRooms);
     }
 });
 

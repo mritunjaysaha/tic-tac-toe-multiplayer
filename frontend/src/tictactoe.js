@@ -27,7 +27,7 @@ export class TicTacToe extends Board {
             const cellElement = document.querySelector(
                 `div[data-cell='${cell}']`
             );
-            this.socket.emit("move", cell, this.playerNumber);
+            this.socket.emit("moves", cell, this.playerNumber);
             cellElement.innerText = this.xoro;
             console.log(cell, cellElement);
         });
