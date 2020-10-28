@@ -28,15 +28,11 @@ const winningCombinations = [
     [0, 4, 8],
     [2, 4, 6],
 ];
-const selectedCell = new Array(9);
 
 io.on("connection", (client) => {
+    client.emit("checkConnection", "connected to server");
     client.on("newGame", handleNewGame);
     client.on("joinGame", handleJoinGame);
-
-    client.emit("checkConnection", "connected to server");
-
-    client.emit("init");
 
     client.on("moves", handleMoves);
 
@@ -52,7 +48,9 @@ io.on("connection", (client) => {
     function handleJoinGame(roomName) {
         const room = io.sockets.adapter.rooms[roomName];
 
-        console.log({ room });
+        console.log("room.sockets", room.sockets);
+
+        console.log({ roomName }, { room });
 
         clientRooms[client.id] = roomName;
         client.join(roomName);
@@ -66,16 +64,21 @@ io.on("connection", (client) => {
 
         clientRooms[client.id] = roomName;
         client.emit("gameCode", roomName);
+        clientRooms[client.id].selectedCell = new Array(9);
+
+        state[roomName] = "started";
 
         client.join(roomName);
         client.number = 1;
         client.emit("init", 1);
 
-        clientRooms.selectedCell = new Array(9);
-
-        console.log(clientRooms);
+        console.log({ clientRooms });
     }
 });
+
+function emitGameState(room, gameState) {
+    io.sockets.in(room).emit("gameState", JSON.stringify(gameState));
+}
 
 io.on("disconnect", () => {
     console.log("user has left");

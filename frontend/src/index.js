@@ -15,7 +15,7 @@ export class App {
 
         this.socket = io("http://localhost:4000");
         this.playerNumber = 0;
-        this.code;
+        this.gameActive = false;
 
         this.start();
         this.bindEvents();
@@ -27,11 +27,20 @@ export class App {
             this.gameCodeDisplay.innerText = gameCode;
         });
 
-        this.socket.on("init", (player) => {
-            this.playerNumber = player;
-            if (this.playerNumber) {
-                this.init();
+        this.socket.on("gameState", (gameState) => {
+            if (!this.gameActive) {
+                console.log(this.gameActive);
+                return;
             }
+
+            const state = JSON.parse(gameState);
+
+            console.log({ state });
+
+            requestAnimationFrame((e) => {
+                e.preventDefault();
+                console.log("here", { state });
+            });
         });
     }
 
@@ -41,23 +50,25 @@ export class App {
             this.sectionGameCodeP1.style.display = "block";
 
             this.socket.emit("newGame");
-        });
 
-        this.inputJoinGame.addEventListener("change", (e) => {
-            this.code = e.target.value;
+            this.init();
         });
 
         this.btnJoinGame.addEventListener("click", () => {
+            const code = this.inputJoinGame.value;
+            console.log({ code });
             this.socket.emit("joinGame", code);
+
+            this.init();
         });
     }
 
     init() {
         this.joinGameSection.style.display = "none";
-
         this.gameSection.style.display = "flex";
-
         new TicTacToe("#board", this.playerNumber, this.socket);
+
+        this.gameActive = true;
     }
 }
 
