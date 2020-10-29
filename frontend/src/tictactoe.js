@@ -18,6 +18,11 @@ export class TicTacToe extends Board {
         this.socket = socket;
 
         this.bindEvents();
+
+        this.socket.on("gameState", (data) => {
+            console.log(data);
+            this.paintBoard(JSON.parse(data));
+        });
     }
 
     bindEvents() {
@@ -30,7 +35,6 @@ export class TicTacToe extends Board {
                 this.player.number,
                 this.player.roomName
             );
-            this.updateBoard();
         });
     }
 
@@ -38,10 +42,10 @@ export class TicTacToe extends Board {
         this.socket.on("wrongMove", () => {
             console.log("WRONG MOVE");
         });
-        this.socket.on("updateBoard", (data) => {
-            console.log(JSON.parse(data));
-            this.paintBoard(JSON.parse(data));
-        });
+        // this.socket.on("updateBoard", (data) => {
+        //     console.log(JSON.parse(data));
+        //     this.paintBoard(JSON.parse(data));
+        // });
     }
 
     paintBoard(array) {

@@ -60,6 +60,8 @@ io.on("connection", (client) => {
 
         console.log("JOIN GAME", { state });
         client.number = 2;
+
+        startGameInterval(roomName);
     }
 
     function handleNewGame() {
@@ -83,6 +85,36 @@ io.on("connection", (client) => {
         console.log({ state });
     }
 });
+
+/**
+ * TODO:
+ * 1. Check for winner in an interval
+ * 2. If there is no winner then updateBoard
+ * 3. Else declare winner and end the interval
+ */
+
+function startGameInterval(roomName) {
+    const intervalID = setInterval(() => {
+        //TODO: CHECK WINNER
+
+        const winner = false;
+        if (!winner) {
+            emitGameState(roomName, state[roomName].board);
+        } else {
+            emitGameOver(roomName, winner);
+            state[roomName] = null;
+            clearInterval(intervalID);
+        }
+    });
+}
+
+function emitGameState(room, gameState) {
+    io.sockets.in(room).emit("gameState", JSON.stringify(gameState));
+}
+
+function emitGameOver(roomName, winner) {
+    // TODO:
+}
 
 io.on("disconnect", () => {
     console.log("user has left");
