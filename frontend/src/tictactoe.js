@@ -20,7 +20,11 @@ export class TicTacToe extends Board {
         this.bindEvents();
 
         this.socket.on("gameState", (data) => {
-            this.paintBoard(JSON.parse(data));
+            const gameState = JSON.parse(data);
+
+            requestAnimationFrame(() => {
+                this.paintBoard(gameState);
+            });
         });
     }
 
