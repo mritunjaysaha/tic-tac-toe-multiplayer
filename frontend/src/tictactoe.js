@@ -24,10 +24,6 @@ export class TicTacToe extends Board {
         this.el.addEventListener("click", (e) => {
             const cell = e.target.dataset["cell"];
 
-            // const cellElement = document.querySelector(
-            //     `div[data-cell='${cell}']`
-            // );
-
             this.socket.emit(
                 "moves",
                 String(cell),
@@ -43,7 +39,25 @@ export class TicTacToe extends Board {
             console.log("WRONG MOVE");
         });
         this.socket.on("updateBoard", (data) => {
-            console.log(data);
+            console.log(JSON.parse(data));
+            this.paintBoard(JSON.parse(data));
         });
+    }
+
+    paintBoard(array) {
+        array.forEach((element) => {
+            console.log(element);
+        });
+
+        for (let i = 0; i < 9; i++) {
+            if (array[i]) {
+                this.paint(array[i], i);
+            }
+        }
+    }
+
+    paint(data, cell) {
+        const cellElement = document.querySelector(`div[data-cell='${cell}']`);
+        cellElement.innerHTML = data === "1" ? "x" : "o";
     }
 }
