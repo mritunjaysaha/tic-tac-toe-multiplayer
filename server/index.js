@@ -105,7 +105,7 @@ function startGameInterval(roomName) {
             state[roomName] = null;
             clearInterval(intervalID);
         }
-    });
+    }, 100);
 }
 
 function emitGameState(room, gameState) {
