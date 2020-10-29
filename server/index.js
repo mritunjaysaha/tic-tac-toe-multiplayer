@@ -43,6 +43,12 @@ io.on("connection", (client) => {
         console.log("MOVES", cell, playerNumber, roomName);
         if (!state[roomName].board[cell]) {
             state[roomName].board[cell] = playerNumber;
+
+            if (playerNumber === "1") {
+                state[roomName].player1Moves++;
+            } else {
+                state[roomName].player2Moves++;
+            }
         } else {
             client.emit("wrongMove");
         }
@@ -75,6 +81,8 @@ io.on("connection", (client) => {
             [roomName]: {
                 isStarted: false,
                 board: new Array(9),
+                player1Moves: 0,
+                player2Moves: 0,
             },
         });
 
@@ -86,8 +94,9 @@ io.on("connection", (client) => {
     }
 });
 
+function checkWinner(gameState) {}
+
 /**
- * TODO:
  * 1. Check for winner in an interval
  * 2. If there is no winner then updateBoard
  * 3. Else declare winner and end the interval
