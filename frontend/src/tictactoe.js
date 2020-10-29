@@ -11,9 +11,8 @@ export class TicTacToe extends Board {
         super(el, 3, 3);
         console.log({ player });
 
-        this.roomName = player.roomName;
-        this.playerNumber = player.number;
-        this.xoro = this.playerNumber === "1" ? "x" : "o";
+        this.player = player;
+        this.xoro = this.player.number === "1" ? "x" : "o";
         this.startGame = "";
 
         this.socket = socket;
@@ -25,17 +24,26 @@ export class TicTacToe extends Board {
         this.el.addEventListener("click", (e) => {
             const cell = e.target.dataset["cell"];
 
-            const cellElement = document.querySelector(
-                `div[data-cell='${cell}']`
-            );
+            // const cellElement = document.querySelector(
+            //     `div[data-cell='${cell}']`
+            // );
 
             this.socket.emit(
                 "moves",
                 String(cell),
-                this.playerNumber,
-                this.roomName
+                this.player.number,
+                this.player.roomName
             );
-            cellElement.innerText = this.xoro;
+            this.updateBoard();
+        });
+    }
+
+    updateBoard() {
+        this.socket.on("wrongMove", () => {
+            console.log("WRONG MOVE");
+        });
+        this.socket.on("updateBoard", (data) => {
+            console.log(data);
         });
     }
 }

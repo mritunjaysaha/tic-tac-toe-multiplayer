@@ -41,6 +41,16 @@ io.on("connection", (client) => {
 
     function handleMoves(cell, playerNumber, roomName) {
         console.log("MOVES", cell, playerNumber, roomName);
+        if (!state[roomName].board[cell]) {
+            state[roomName].board[cell] = playerNumber;
+        } else {
+            client.emit("wrongMove");
+        }
+
+        console.log({ state });
+        console.log(state[roomName].board);
+
+        client.emit("updateBoard", JSON.stringify(state[roomName].board));
     }
 
     function handleJoinGame(roomName) {
