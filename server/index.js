@@ -52,6 +52,8 @@ io.on("connection", (client) => {
 
         console.log({ roomName }, { room });
 
+        console.log("JOIN GAME");
+
         clientRooms[client.id] = roomName;
         client.join(roomName);
 
