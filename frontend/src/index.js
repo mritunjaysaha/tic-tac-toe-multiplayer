@@ -37,7 +37,6 @@ export class App {
         this.btnNewGameP1.addEventListener("click", () => {
             this.player.number = "1";
             this.joinGameSection.style.display = "none";
-            this.sectionGameCodeP1.style.display = "block";
 
             this.socket.emit("newGame");
 
@@ -46,16 +45,19 @@ export class App {
 
         this.btnJoinGame.addEventListener("click", () => {
             this.player.number = "2";
-            const code = this.inputJoinGame.value;
-            console.log({ code });
-            this.player.roomName = code;
-            this.socket.emit("joinGame", code);
+            const roomName = this.inputJoinGame.value;
+            console.log({ roomName });
+            this.player.roomName = roomName;
+            this.gameCodeDisplay.innerText = roomName;
+            this.socket.emit("joinGame", roomName);
 
             this.init();
         });
     }
 
     init() {
+        this.sectionGameCodeP1.style.display = "block";
+
         this.joinGameSection.style.display = "none";
         this.gameSection.style.display = "flex";
         console.log("here", this.player);
