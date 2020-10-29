@@ -94,7 +94,30 @@ io.on("connection", (client) => {
     }
 });
 
-function checkWinner(gameState) {}
+function checkWinner(arrBoard, player1Moves, player2Moves) {
+    let winner = null;
+
+    if (player1Moves < 3 || player2Moves < 3) {
+        return null;
+    }
+
+    if (player1Moves + player2Moves === 9) {
+        return "draw";
+    }
+
+    winningCombinations.forEach((combo) => {
+        if (
+            arrBoard &&
+            arrBoard[combo[0]] === arrBoard[combo[1]] &&
+            arrBoard[combo[0]] === arrBoard[combo[2]]
+        ) {
+            winner = arrBoard[combo[0]];
+            console.log("winner", winner);
+        }
+    });
+
+    return winner;
+}
 
 /**
  * 1. Check for winner in an interval
@@ -104,9 +127,11 @@ function checkWinner(gameState) {}
 
 function startGameInterval(roomName) {
     const intervalID = setInterval(() => {
-        //TODO: CHECK WINNER
-
-        const winner = false;
+        const winner = checkWinner(
+            state[roomName].board,
+            state[roomName].player1Moves,
+            state[roomName].player1Moves
+        );
         if (!winner) {
             emitGameState(roomName, state[roomName].board);
         } else {
@@ -121,8 +146,8 @@ function emitGameState(room, gameState) {
     io.sockets.in(room).emit("gameState", JSON.stringify(gameState));
 }
 
-function emitGameOver(roomName, winner) {
-    // TODO:
+function emitGameOver(room, winner) {
+    io.sockets.in(room).emit("gameOver", winner);
 }
 
 io.on("disconnect", () => {

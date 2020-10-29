@@ -26,6 +26,14 @@ export class TicTacToe extends Board {
                 this.paintBoard(gameState);
             });
         });
+
+        this.socket.on("gameOver", (winner) => {
+            console.log({ winner });
+            if (winner === "draw") {
+                alert("Draw");
+            }
+            alert(`winner is ${winner}`);
+        });
     }
 
     bindEvents() {
