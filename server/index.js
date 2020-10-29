@@ -6,6 +6,7 @@ const socket = require("socket.io");
 const cors = require("cors");
 
 const router = require("./router");
+const { stat } = require("fs");
 
 const app = express();
 const server = http.createServer(app);
@@ -36,51 +37,42 @@ io.on("connection", (client) => {
 
     client.on("moves", handleMoves);
 
-    function handleMoves(cell, playerNumber) {
-        console.log(typeof playerNumber);
-        if (playerNumber === 1) {
-            clientRooms.selectedCell[cell] = playerNumber;
-        }
+    console.log("client.id", client.id);
 
-        console.log(clientRooms);
+    function handleMoves(cell, playerNumber, roomName) {
+        console.log("MOVES", cell, playerNumber, roomName);
     }
 
     function handleJoinGame(roomName) {
-        const room = io.sockets.adapter.rooms[roomName];
-
-        console.log("room.sockets", room.sockets);
-
-        console.log({ roomName }, { room });
-
-        console.log("JOIN GAME");
-
         clientRooms[client.id] = roomName;
+        state[roomName].isStarted = true;
         client.join(roomName);
 
+        console.log("JOIN GAME", { state });
         client.number = 2;
-        client.emit("init", 2);
     }
 
     function handleNewGame() {
         const roomName = makeId();
 
         clientRooms[client.id] = roomName;
+        console.log("client.id", client.id);
         client.emit("gameCode", roomName);
-        clientRooms[client.id].selectedCell = new Array(9);
-
-        state[roomName] = "started";
+        clientRooms[client.id].selectedCells = ["1111"];
+        Object.assign(state, {
+            [roomName]: {
+                isStarted: false,
+                board: new Array(9),
+            },
+        });
 
         client.join(roomName);
         client.number = 1;
-        client.emit("init", 1);
 
         console.log({ clientRooms });
+        console.log({ state });
     }
 });
-
-function emitGameState(room, gameState) {
-    io.sockets.in(room).emit("gameState", JSON.stringify(gameState));
-}
 
 io.on("disconnect", () => {
     console.log("user has left");

@@ -14,8 +14,16 @@ export class App {
         this.gameCodeDisplay = document.getElementById("game-code");
 
         this.socket = io("http://localhost:4000");
-        this.playerNumber = 0;
+        this.player = {
+            number: "",
+            roomName: "",
+        };
         this.gameActive = false;
+
+        this.socket.on("gameCode", (roomName) => {
+            this.gameCodeDisplay.innerText = roomName;
+            this.player.roomName = roomName;
+        });
 
         this.start();
         this.bindEvents();
@@ -23,29 +31,11 @@ export class App {
 
     start() {
         this.socket.on("checkConnection", (message) => console.log(message));
-        this.socket.on("gameCode", (gameCode) => {
-            this.gameCodeDisplay.innerText = gameCode;
-        });
-
-        this.socket.on("gameState", (gameState) => {
-            if (!this.gameActive) {
-                console.log(this.gameActive);
-                return;
-            }
-
-            const state = JSON.parse(gameState);
-
-            console.log({ state });
-
-            requestAnimationFrame((e) => {
-                e.preventDefault();
-                console.log("here", { state });
-            });
-        });
     }
 
     bindEvents() {
         this.btnNewGameP1.addEventListener("click", () => {
+            this.player.number = "1";
             this.joinGameSection.style.display = "none";
             this.sectionGameCodeP1.style.display = "block";
 
@@ -55,8 +45,10 @@ export class App {
         });
 
         this.btnJoinGame.addEventListener("click", () => {
+            this.player.number = "2";
             const code = this.inputJoinGame.value;
             console.log({ code });
+            this.player.roomName = code;
             this.socket.emit("joinGame", code);
 
             this.init();
@@ -66,8 +58,8 @@ export class App {
     init() {
         this.joinGameSection.style.display = "none";
         this.gameSection.style.display = "flex";
-        new TicTacToe("#board", this.playerNumber, this.socket);
-
+        console.log("here", this.player);
+        new TicTacToe("#board", this.player, this.socket);
         this.gameActive = true;
     }
 }

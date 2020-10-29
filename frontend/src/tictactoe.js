@@ -2,20 +2,21 @@ import { Board } from "./board";
 
 export class TicTacToe extends Board {
     /**
-     *
+     * Generates the TicTacToe game
      * @param {String} el
      * @param {Number} playerNumber
      * @param {[Object object]} socket
      */
-    constructor(el, playerNumber, socket) {
+    constructor(el, player, socket) {
         super(el, 3, 3);
+        console.log({ player });
 
-        this.playerNumber = playerNumber;
-        this.xoro = this.playerNumber === 1 ? "x" : "o";
+        this.roomName = player.roomName;
+        this.playerNumber = player.number;
+        this.xoro = this.playerNumber === "1" ? "x" : "o";
+        this.startGame = "";
 
         this.socket = socket;
-
-        this.socket.emit("ttt", "here");
 
         this.bindEvents();
     }
@@ -27,9 +28,14 @@ export class TicTacToe extends Board {
             const cellElement = document.querySelector(
                 `div[data-cell='${cell}']`
             );
-            this.socket.emit("moves", cell, this.playerNumber);
+
+            this.socket.emit(
+                "moves",
+                String(cell),
+                this.playerNumber,
+                this.roomName
+            );
             cellElement.innerText = this.xoro;
-            console.log(cell, cellElement);
         });
     }
 }
