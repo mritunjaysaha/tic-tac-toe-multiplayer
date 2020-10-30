@@ -1,11 +1,15 @@
-### TicTacToe Multiplayer
+## TicTacToe Multiplayer
 
--   how to disable and enable onclick event in javascript?
+1. Clone the repository.
 
-    -   [stackoverflow](https://stackoverflow.com/questions/18982642/how-to-disable-and-then-enable-onclick-event-on-div-with-javascript/18983026)
+2. Start backend
 
-              // To disable:
-              document.getElementById('id').style.pointerEvents = 'none';
-              // To re-enable:
-              document.getElementById('id').style.pointerEvents = 'auto';
-              // Use '' if you want to allow CSS rules to set the value
+`cd server`
+`npm install`
+`npm run dev` or `yarn dev`
+
+3. Start frontend
+
+`cd server`
+`npm install`
+`npm run dev` or `yarn dev`

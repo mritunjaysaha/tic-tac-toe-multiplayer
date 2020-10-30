@@ -94,9 +94,7 @@ io.on("connection", (client) => {
     }
 });
 
-function checkWinner(arrBoard, player1Moves, player2Moves) {
-    let winner = null;
-
+function checkWinner(roomName, arrBoard, player1Moves, player2Moves) {
     if (player1Moves < 3 || player2Moves < 3) {
         return null;
     }
@@ -112,22 +110,21 @@ function checkWinner(arrBoard, player1Moves, player2Moves) {
             arrBoard[combo[0]] === arrBoard[combo[2]]
         ) {
             winner = arrBoard[combo[0]];
-            console.log("winner", winner);
+            return winner;
         }
     });
-
-    return winner;
 }
 
 /**
  * 1. Check for winner in an interval
- * 2. If there is no winner then updateBoard
+ * 2. If there is no winner then update board
  * 3. Else declare winner and end the interval
  */
 
 function startGameInterval(roomName) {
     const intervalID = setInterval(() => {
         const winner = checkWinner(
+            roomName,
             state[roomName].board,
             state[roomName].player1Moves,
             state[roomName].player1Moves
@@ -139,7 +136,7 @@ function startGameInterval(roomName) {
             state[roomName] = null;
             clearInterval(intervalID);
         }
-    }, 100);
+    }, 1000);
 }
 
 function emitGameState(room, gameState) {
