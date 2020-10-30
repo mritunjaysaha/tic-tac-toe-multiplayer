@@ -1,6 +1,6 @@
 {
   "name": "tic-tac-toe",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "play tic-tac-toe with CPU",
   "main": "index.js",
   "scripts": {
