@@ -11,8 +11,11 @@ export class TicTacToe extends Board {
         super(el, 3, 3);
         console.log({ player });
 
+        this.xFont = `<i class="uil uil-times-circle"></i>`;
+        this.oFont = `<i class="uil uil-circle"></i>`;
+
         this.player = player;
-        this.xoro = this.player.number === "1" ? "x" : "o";
+        this.xoro = this.player.number === "1" ? this.xFont : this.oFont;
         this.startGame = "";
 
         this.socket = socket;
@@ -64,6 +67,6 @@ export class TicTacToe extends Board {
 
     paint(data, cell) {
         const cellElement = document.querySelector(`div[data-cell='${cell}']`);
-        cellElement.innerHTML = data === "1" ? "x" : "o";
+        cellElement.innerHTML = data === "1" ? this.xFont : this.oFont;
     }
 }
