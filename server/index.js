@@ -94,8 +94,8 @@ io.on("connection", (client) => {
     }
 });
 
-function checkWinner(roomName, arrBoard, player1Moves, player2Moves) {
-    if (player1Moves < 3 || player2Moves < 3) {
+function checkWinner(arrBoard, player1Moves, player2Moves) {
+    if (player1Moves < 3 && player2Moves < 3) {
         return null;
     }
 
@@ -127,7 +127,7 @@ function startGameInterval(roomName) {
             roomName,
             state[roomName].board,
             state[roomName].player1Moves,
-            state[roomName].player1Moves
+            state[roomName].player2Moves
         );
         if (!winner) {
             emitGameState(roomName, state[roomName].board);
