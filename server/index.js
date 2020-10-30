@@ -134,9 +134,13 @@ function startGameInterval(roomName) {
         if (!winner) {
             emitGameState(roomName, state[roomName].board);
         } else {
-            emitGameOver(roomName, winner);
-            state[roomName] = null;
-            clearInterval(intervalID);
+            emitGameState(roomName, state[roomName].board);
+
+            setTimeout(() => {
+                emitGameOver(roomName, winner);
+                state[roomName] = null;
+                clearInterval(intervalID);
+            }, 0);
         }
     }, 1000);
 }
