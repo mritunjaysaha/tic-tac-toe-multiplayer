@@ -13,7 +13,7 @@ export class App {
         this.btnJoinGame = document.getElementById("btn-join-game");
         this.gameCodeDisplay = document.getElementById("game-code");
 
-        this.socket = io("http://localhost:4000");
+        this.socket = io("http://localhost:4000") || io(process.env.SOCKET);
         this.player = {
             number: "",
             roomName: "",
