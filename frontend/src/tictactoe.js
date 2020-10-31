@@ -9,7 +9,13 @@ export class TicTacToe extends Board {
      */
     constructor(el, player, socket) {
         super(el, 3, 3);
-        console.log({ player });
+
+        this.player1ScoreEl = document.querySelector("#player1-score");
+        this.player2ScoreEl = document.querySelector("#player2-score");
+        this.player1Score = 0;
+        this.player2Score = 0;
+
+        console.log(this.player1Score, this.player2Score);
 
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
@@ -35,7 +41,8 @@ export class TicTacToe extends Board {
             if (winner === "draw") {
                 alert("Draw");
             }
-            alert(`winner is ${winner}`);
+            // alert(`winner is ${winner}`);
+            this.updateScore(winner);
         });
     }
 
@@ -70,5 +77,14 @@ export class TicTacToe extends Board {
         cellElement.innerHTML = data === "1" ? this.xFont : this.oFont;
     }
 
-    updateScore() {}
+    updateScore(winner) {
+        if (winner === "1") {
+            this.player1Score++;
+            this.player1ScoreEl.innerText = this.player1Score;
+        }
+        if (winner === "2") {
+            this.player2Score++;
+            this.player2ScoreEl.innerText = this.player2Score;
+        }
+    }
 }
