@@ -14,8 +14,9 @@
         line-height: 1em;
 
         a {
-            color: $ScoreText;
+            color: $footerAnchor;
             text-decoration: none;
+            letter-spacing: 2px;
         }
     }
 }
