@@ -15,8 +15,8 @@
 
         a {
             color: $footerAnchor;
-            text-decoration: none;
             letter-spacing: 2px;
+            text-underline-position: under;
         }
     }
 }
