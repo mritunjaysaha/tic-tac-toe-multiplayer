@@ -28,4 +28,9 @@ export class Board {
 
         this.el.appendChild(fragment);
     }
+
+    resetBoard() {
+        this.el.innerHTML = "";
+        this.generateBoard();
+    }
 }
