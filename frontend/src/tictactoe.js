@@ -69,4 +69,6 @@ export class TicTacToe extends Board {
         const cellElement = document.querySelector(`div[data-cell='${cell}']`);
         cellElement.innerHTML = data === "1" ? this.xFont : this.oFont;
     }
+
+    updateScore() {}
 }
