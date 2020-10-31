@@ -151,6 +151,9 @@ function emitGameState(room, gameState) {
 
 function emitGameOver(room, winner) {
     io.sockets.in(room).emit("gameOver", winner);
+
+    state[room].board = new Array(9);
+    console.log("reinitialized board", state);
 }
 
 io.on("disconnect", () => {

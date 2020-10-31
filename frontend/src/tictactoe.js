@@ -66,6 +66,9 @@ export class TicTacToe extends Board {
         });
 
         // play again button
+        this.playAgainBtn.addEventListener("click", () => {
+            this.resultModal.style.display = "none";
+        });
     }
 
     paintBoard(array) {
