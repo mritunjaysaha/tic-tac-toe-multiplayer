@@ -16,6 +16,13 @@
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
+
+        h3 {
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: $ScoreText;
+        }
     }
     #result {
         text-transform: uppercase;

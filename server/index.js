@@ -37,11 +37,10 @@ io.on("connection", (client) => {
 
     client.on("moves", handleMoves);
 
-    console.log("client.id", client.id);
-
     function handleMoves(cell, playerNumber, roomName) {
         console.log("MOVES", cell, playerNumber, roomName);
-        if (!state[roomName].board[cell]) {
+
+        if (state[roomName] && !state[roomName].board[cell]) {
             state[roomName].board[cell] = playerNumber;
 
             if (playerNumber === "1") {
@@ -95,24 +94,27 @@ io.on("connection", (client) => {
 });
 
 function checkWinner(arrBoard, player1Moves, player2Moves) {
-    if (player1Moves < 3 && player2Moves < 3) {
-        return null;
-    }
-
     if (player1Moves + player2Moves === 9) {
         return "draw";
     }
 
+    let winner = null;
+
     winningCombinations.forEach((combo) => {
         if (
-            arrBoard &&
-            arrBoard[combo[0]] === arrBoard[combo[1]] &&
-            arrBoard[combo[0]] === arrBoard[combo[2]]
+            (arrBoard &&
+                arrBoard[combo[0]] === "1" &&
+                arrBoard[combo[1]] === "1" &&
+                arrBoard[combo[2]] === "1") ||
+            (arrBoard[combo[0]] === "2" &&
+                arrBoard[combo[1]] === "2" &&
+                arrBoard[combo[2]] === "2")
         ) {
             winner = arrBoard[combo[0]];
-            return winner;
+            console.log("winner is ", winner, arrBoard);
         }
     });
+    return winner;
 }
 
 /**
@@ -124,7 +126,6 @@ function checkWinner(arrBoard, player1Moves, player2Moves) {
 function startGameInterval(roomName) {
     const intervalID = setInterval(() => {
         const winner = checkWinner(
-            roomName,
             state[roomName].board,
             state[roomName].player1Moves,
             state[roomName].player2Moves
@@ -132,9 +133,13 @@ function startGameInterval(roomName) {
         if (!winner) {
             emitGameState(roomName, state[roomName].board);
         } else {
-            emitGameOver(roomName, winner);
-            state[roomName] = null;
-            clearInterval(intervalID);
+            emitGameState(roomName, state[roomName].board);
+
+            setTimeout(() => {
+                emitGameOver(roomName, winner);
+                state[roomName] = null;
+                clearInterval(intervalID);
+            }, 0);
         }
     }, 1000);
 }
@@ -145,6 +150,9 @@ function emitGameState(room, gameState) {
 
 function emitGameOver(room, winner) {
     io.sockets.in(room).emit("gameOver", winner);
+
+    state[room].board = new Array(9);
+    console.log("reinitialized board", state);
 }
 
 io.on("disconnect", () => {
