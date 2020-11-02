@@ -37,11 +37,10 @@ io.on("connection", (client) => {
 
     client.on("moves", handleMoves);
 
-    console.log("client.id", client.id);
-
     function handleMoves(cell, playerNumber, roomName) {
         console.log("MOVES", cell, playerNumber, roomName);
-        if (!state[roomName].board[cell]) {
+
+        if (state[roomName] && !state[roomName].board[cell]) {
             state[roomName].board[cell] = playerNumber;
 
             if (playerNumber === "1") {
