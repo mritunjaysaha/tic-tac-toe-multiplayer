@@ -72,6 +72,10 @@ export class TicTacToe extends Board {
                 number: this.player.number,
                 roomName: this.player.roomName,
             });
+
+            // TODO: Add no button below play again
+            // emit an event to notify the sever that
+            // the game is over.
         });
     }
 
