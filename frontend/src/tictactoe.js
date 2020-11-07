@@ -4,7 +4,7 @@ export class TicTacToe extends Board {
     /**
      * Generates the TicTacToe game
      * @param {String} el
-     * @param {Number} playerNumber
+     * @param {[Object object]} player number and room name
      * @param {[Object object]} socket
      */
     constructor(el, player, socket) {
@@ -17,14 +17,12 @@ export class TicTacToe extends Board {
         this.resultModal = document.querySelector("#modal");
         this.resultModalWinner = document.querySelector("#result");
         this.playAgainBtn = document.querySelector("#btn-play-again");
-        console.log(this.resultModal);
 
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
 
         this.player = player;
         this.xoro = this.player.number === "1" ? this.xFont : this.oFont;
-        this.startGame = "";
 
         this.socket = socket;
 
@@ -70,6 +68,10 @@ export class TicTacToe extends Board {
             this.resultModal.style.display = "none";
 
             this.resetBoard();
+            this.socket.emit("playAgain", {
+                number: this.player.number,
+                roomName: this.player.roomName,
+            });
         });
     }
 
@@ -89,11 +91,17 @@ export class TicTacToe extends Board {
     updateScore(winner) {
         if (winner === "1") {
             this.player1Score++;
-            this.player1ScoreEl.innerText = this.player1Score;
+            this.player1ScoreEl.innerText =
+                this.player1Score < 10
+                    ? `0${this.player1Score}`
+                    : this.player1Score;
         }
         if (winner === "2") {
             this.player2Score++;
-            this.player2ScoreEl.innerText = this.player2Score;
+            this.player2ScoreEl.innerText =
+                this.player2Score < 10
+                    ? `0${this.player2Score}`
+                    : this.player2Score;
         }
     }
 
