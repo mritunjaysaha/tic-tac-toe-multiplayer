@@ -59,15 +59,24 @@
     </footer>
 
     <!-- MODALS -->
-    <section id="modal">
-        <article id="modal-contents">
+
+    <!-- Play Again Modal -->
+    <section class="modal" id="result-modal">
+        <article>
             <h3>Winner is</h3>
-            <p id="result"></p>
+            <p id="result-p"></p>
             <button id="btn-play-again">play again</button>
             <button id="btn-play-no">exit</button>
         </article>
     </section>
 
+    <!-- Pause Modal -->
+    <section class="modal" id="pause-modal">
+        <article>
+            <h3>pause</h3>
+            <p id="pause-p"></p>
+        </article>
+    </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 </body>

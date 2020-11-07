@@ -30,13 +30,6 @@ export class App {
             window.location.reload();
         });
 
-        this.socket.on("pause", (player) => {
-            console.log("pause ", player);
-            if (player === this.player.number) {
-                console.log("pause ", player, this.player.number);
-            }
-        });
-
         this.start();
         this.bindEvents();
     }

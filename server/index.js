@@ -89,7 +89,7 @@ io.on("connection", (client) => {
             total % 2 === 0
         );
 
-        emitPauseMove(roomName, total % 2 === 0 ? 2 : 1);
+        emitPauseMove(roomName, total % 2 === 0 ? 1 : 2);
     }
 
     function handleJoinGame(roomName) {
