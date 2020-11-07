@@ -26,6 +26,10 @@ export class App {
             this.player.roomName = roomName;
         });
 
+        this.socket.on("end", () => {
+            window.location.reload();
+        });
+
         this.start();
         this.bindEvents();
     }

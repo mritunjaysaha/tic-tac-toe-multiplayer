@@ -39,6 +39,11 @@ io.on("connection", (client) => {
 
     client.on("moves", handleMoves);
     client.on("playAgain", handlePlayAgain);
+    client.on("endGame", handleEndGame);
+
+    function handleEndGame(roomName, socket) {
+        endGame(roomName);
+    }
 
     function handlePlayAgain(player) {
         console.log({ player });
@@ -197,6 +202,10 @@ function emitGameOver(room, winner) {
     console.log("state:", state);
     state[room].board = new Array(9);
     console.log("reinitialized board", state);
+}
+
+function endGame(room) {
+    io.sockets.in(room).emit("end", "true");
 }
 
 io.on("disconnect", () => {

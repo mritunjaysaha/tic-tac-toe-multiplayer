@@ -17,6 +17,9 @@ export class TicTacToe extends Board {
         this.resultModal = document.querySelector("#modal");
         this.resultModalWinner = document.querySelector("#result");
         this.playAgainBtn = document.querySelector("#btn-play-again");
+        this.playNoBtn = document.querySelector("#btn-play-no");
+
+        console.log(this.playNoBtn);
 
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
@@ -76,6 +79,11 @@ export class TicTacToe extends Board {
             // TODO: Add no button below play again
             // emit an event to notify the sever that
             // the game is over.
+        });
+
+        // NO button
+        this.playNoBtn.addEventListener("click", () => {
+            this.socket.emit("endGame", this.player.roomName);
         });
     }
 

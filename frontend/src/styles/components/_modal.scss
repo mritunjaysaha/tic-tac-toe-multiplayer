@@ -24,6 +24,19 @@
             letter-spacing: 2px;
             color: $ScoreText;
         }
+
+        button {
+            text-align: center;
+            vertical-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-family: "Barlow Semi Condensed", sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: $border-radius;
+            color: $ScoreBg;
+            padding: 0.4rem 1.2rem;
+        }
     }
 
     #result {
@@ -35,16 +48,10 @@
     }
 
     #btn-play-again {
-        text-align: center;
-        vertical-align: center;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        font-family: "Barlow Semi Condensed", sans-serif;
-        font-weight: 700;
-        border: none;
-        border-radius: $border-radius;
-        color: $ScoreBg;
         background: $ScoreText;
-        padding: 0.4rem 1.2rem;
+    }
+
+    #btn-play-no {
+        background: #f00;
     }
 }
