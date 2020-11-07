@@ -30,17 +30,42 @@ const winningCombinations = [
     [2, 4, 6],
 ];
 
+let playAgainCount = 0;
+
 io.on("connection", (client) => {
     client.emit("checkConnection", "connected to server");
     client.on("newGame", handleNewGame);
     client.on("joinGame", handleJoinGame);
 
     client.on("moves", handleMoves);
+    client.on("playAgain", handlePlayAgain);
+
+    function handlePlayAgain(player) {
+        console.log({ player });
+
+        if (player.number === "1" || player.number === "2") {
+            playAgainCount++;
+            console.log({ playAgainCount });
+        }
+        if (playAgainCount === 2) {
+            state[player.roomName] = {
+                isStarted: playAgainCount === 2,
+                board: new Array(9),
+                player1Moves: 0,
+                player2Moves: 0,
+            };
+
+            startGameInterval(player.roomName);
+            playAgainCount = 0;
+        }
+    }
 
     function handleMoves(cell, playerNumber, roomName) {
         console.log("MOVES", cell, playerNumber, roomName);
+        console.log("-----------------------------------");
+        console.log(state);
 
-        if (state[roomName] && !state[roomName].board[cell]) {
+        if (!state[roomName].board[cell]) {
             state[roomName].board[cell] = playerNumber;
 
             if (playerNumber === "1") {
@@ -51,9 +76,6 @@ io.on("connection", (client) => {
         } else {
             client.emit("wrongMove");
         }
-
-        console.log({ state });
-        console.log(state[roomName].board);
 
         client.emit("updateBoard", JSON.stringify(state[roomName].board));
     }
@@ -75,7 +97,6 @@ io.on("connection", (client) => {
         clientRooms[client.id] = roomName;
         console.log("client.id", client.id);
         client.emit("gameCode", roomName);
-        clientRooms[client.id].selectedCells = ["1111"];
         Object.assign(state, {
             [roomName]: {
                 isStarted: false,
@@ -92,6 +113,14 @@ io.on("connection", (client) => {
         console.log({ state });
     }
 });
+
+/**
+ * Checks whether there is a wineer
+ * or the game ends in a draw.
+ * @param {Array} arrBoard
+ * @param {Number} player1Moves
+ * @param {Number} player2Moves
+ */
 
 function checkWinner(arrBoard, player1Moves, player2Moves) {
     if (player1Moves + player2Moves === 9) {
@@ -118,9 +147,11 @@ function checkWinner(arrBoard, player1Moves, player2Moves) {
 }
 
 /**
- * 1. Check for winner in an interval
- * 2. If there is no winner then update board
- * 3. Else declare winner and end the interval
+ * Start the game interval and check
+ * for the winner. If there are no winners
+ * then emit the status of the board, else
+ * emit the name of the winner.
+ * @param {String} roomName
  */
 
 function startGameInterval(roomName) {
@@ -144,13 +175,26 @@ function startGameInterval(roomName) {
     }, 1000);
 }
 
+/**
+ * emit the status of the current board cells that
+ * has been occupied
+ * @param {String} room
+ * @param {Array} gameState
+ */
 function emitGameState(room, gameState) {
     io.sockets.in(room).emit("gameState", JSON.stringify(gameState));
 }
 
+/**
+ * emit the winner of the game and
+ * reset the board.
+ * @param {String} room
+ * @param {String} winner
+ */
 function emitGameOver(room, winner) {
     io.sockets.in(room).emit("gameOver", winner);
 
+    console.log("state:", state);
     state[room].board = new Array(9);
     console.log("reinitialized board", state);
 }
