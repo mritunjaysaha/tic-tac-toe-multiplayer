@@ -2,11 +2,12 @@
     position: absolute;
     height: 100vh;
     width: 100vw;
-    display: none;
+    display: none; //flex
     justify-content: center;
     align-items: center;
     z-index: 10;
     background: rgba(0, 0, 0, 0.5);
+
     article {
         background: $ScoreBg;
         width: 16em;
@@ -24,6 +25,7 @@
             color: $ScoreText;
         }
     }
+
     #result {
         text-transform: uppercase;
         font-size: 1.5em;
@@ -33,9 +35,8 @@
     }
 
     #btn-play-again {
-        height: 2em;
-        width: 10em;
         text-align: center;
+        vertical-align: center;
         text-transform: uppercase;
         letter-spacing: 0.2em;
         font-family: "Barlow Semi Condensed", sans-serif;
@@ -44,5 +45,6 @@
         border-radius: $border-radius;
         color: $ScoreBg;
         background: $ScoreText;
+        padding: 0.4rem 1.2rem;
     }
 }

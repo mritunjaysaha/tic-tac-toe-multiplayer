@@ -91,11 +91,17 @@ export class TicTacToe extends Board {
     updateScore(winner) {
         if (winner === "1") {
             this.player1Score++;
-            this.player1ScoreEl.innerText = this.player1Score;
+            this.player1ScoreEl.innerText =
+                this.player1Score < 10
+                    ? `0${this.player1Score}`
+                    : this.player1Score;
         }
         if (winner === "2") {
             this.player2Score++;
-            this.player2ScoreEl.innerText = this.player2Score;
+            this.player2ScoreEl.innerText =
+                this.player2Score < 10
+                    ? `0${this.player2Score}`
+                    : this.player2Score;
         }
     }
 
