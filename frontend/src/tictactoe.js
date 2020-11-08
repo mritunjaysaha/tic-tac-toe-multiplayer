@@ -14,12 +14,15 @@ export class TicTacToe extends Board {
         this.player2ScoreEl = document.querySelector("#player2-score");
         this.player1Score = 0;
         this.player2Score = 0;
-        this.resultModal = document.querySelector("#modal");
-        this.resultModalWinner = document.querySelector("#result");
+
+        this.resultModal = document.querySelector("#result-modal");
+        this.pauseModal = document.querySelector("#pause-modal");
+
+        this.resultModalWinner = document.querySelector("#result-p");
+        this.pauseModalpEl = document.querySelector("#pause-p");
+
         this.playAgainBtn = document.querySelector("#btn-play-again");
         this.playNoBtn = document.querySelector("#btn-play-no");
-
-        console.log(this.playNoBtn);
 
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
@@ -46,6 +49,23 @@ export class TicTacToe extends Board {
             }
             this.showModal(winner);
             this.updateScore(winner);
+        });
+
+        this.socket.on("pause", (player) => {
+            console.log(
+                "pause ",
+                player,
+                this.player.number,
+                player == this.player.number
+            );
+            if (player == this.player.number) {
+                console.log("pause ", player, this.player.number);
+
+                this.pauseModal.style.display = "flex";
+                this.pauseModalpEl.innerText = player;
+            } else {
+                this.pauseModal.style.display = "none";
+            }
         });
     }
 
@@ -75,13 +95,9 @@ export class TicTacToe extends Board {
                 number: this.player.number,
                 roomName: this.player.roomName,
             });
-
-            // TODO: Add no button below play again
-            // emit an event to notify the sever that
-            // the game is over.
         });
 
-        // NO button
+        // NO/exit button
         this.playNoBtn.addEventListener("click", () => {
             this.socket.emit("endGame", this.player.roomName);
         });
@@ -120,5 +136,7 @@ export class TicTacToe extends Board {
     showModal(winner) {
         this.resultModal.style.display = "flex";
         this.resultModalWinner.innerText = `player ${winner}`;
+
+        this.pauseModal.style.display = "none";
     }
 }
