@@ -20,6 +20,7 @@ export class TicTacToe extends Board {
 
         this.resultModalWinner = document.querySelector("#result-p");
         this.pauseModalpEl = document.querySelector("#pause-p");
+        this.pauseModalJoke = document.querySelector("#pause-p-joke");
 
         this.playAgainBtn = document.querySelector("#btn-play-again");
         this.playNoBtn = document.querySelector("#btn-play-no");
@@ -51,18 +52,12 @@ export class TicTacToe extends Board {
             this.updateScore(winner);
         });
 
-        this.socket.on("pause", (player) => {
-            console.log(
-                "pause ",
-                player,
-                this.player.number,
-                player == this.player.number
-            );
+        this.socket.on("pause", (player, joke) => {
+            console.log({ joke });
             if (player == this.player.number) {
-                console.log("pause ", player, this.player.number);
-
                 this.pauseModal.style.display = "flex";
                 this.pauseModalpEl.innerText = player;
+                this.pauseModalJoke.innerText = joke;
             } else {
                 this.pauseModal.style.display = "none";
             }

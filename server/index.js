@@ -1,4 +1,4 @@
-const { makeId } = require("./utils");
+const { makeId, getJoke } = require("./utils");
 
 const http = require("http");
 const express = require("express");
@@ -214,12 +214,16 @@ function endGame(room) {
 }
 
 /**
- * Emit event to pause move for player.
- * @param {} player
+ *
+ * @param {String} room
+ * @param {Number} player
  */
 function emitPauseMove(room, player) {
     console.log({ player });
-    io.sockets.in(room).emit("pause", player);
+    const joke = getJoke();
+
+    console.log({ joke });
+    io.sockets.in(room).emit("pause", player, joke);
 }
 
 io.on("disconnect", () => {
