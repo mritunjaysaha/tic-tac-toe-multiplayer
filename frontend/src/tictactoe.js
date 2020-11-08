@@ -136,5 +136,7 @@ export class TicTacToe extends Board {
     showModal(winner) {
         this.resultModal.style.display = "flex";
         this.resultModalWinner.innerText = `player ${winner}`;
+
+        this.pauseModal.style.display = "none";
     }
 }

@@ -10,13 +10,14 @@
 
     article {
         background: $ScoreBg;
+        height: 12em;
         width: 16em;
-        height: 10em;
         border-radius: $border-radius;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
+        padding: 1em 0;
 
         h3 {
             margin: 0;
@@ -41,7 +42,7 @@
         }
     }
 
-    #result {
+    .modal-p-text {
         text-transform: uppercase;
         font-size: 1.5em;
         letter-spacing: 0.2em;
