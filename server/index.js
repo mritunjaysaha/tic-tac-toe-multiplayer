@@ -6,7 +6,6 @@ const socket = require("socket.io");
 const cors = require("cors");
 
 const router = require("./router");
-const { stat } = require("fs");
 
 const app = express();
 const server = http.createServer(app);
@@ -41,11 +40,11 @@ io.on("connection", (client) => {
     client.on("playAgain", handlePlayAgain);
     client.on("endGame", handleEndGame);
 
-    function handleEndGame(roomName, socket) {
+    function handleEndGame(roomName) {
         endGame(roomName);
     }
 
-    function handlePlayAgain(player) {
+    function handlePlayAgain(player, gamesPlayed) {
         if (player.number === "1" || player.number === "2") {
             playAgainCount++;
         }
@@ -55,11 +54,16 @@ io.on("connection", (client) => {
                 board: new Array(9),
                 player1Moves: 0,
                 player2Moves: 0,
+                gamesPlayed: gamesPlayed,
             };
-
+            console.log("GAMES PLAYED", gamesPlayed, typeof gamesPlayed);
+            console.log(gamesPlayed % 2 === 0 ? 1 : 2);
+            emitPauseMove(player.roomName, gamesPlayed % 2 === 0 ? 2 : 1);
             startGameInterval(player.roomName);
             playAgainCount = 0;
         }
+
+        console.log(state[player.roomName]);
     }
 
     function handleMoves(cell, playerNumber, roomName) {
@@ -81,15 +85,27 @@ io.on("connection", (client) => {
         client.emit("updateBoard", JSON.stringify(state[roomName].board));
 
         const total = player1Moves + player2Moves;
-        console.log(
-            "player",
-            player1Moves,
-            player2Moves,
-            total % 2,
-            total % 2 === 0
-        );
 
-        emitPauseMove(roomName, total % 2 === 0 ? 1 : 2);
+        const pausePlayer = () => {
+            console.log(state[roomName]);
+            if (state[roomName].gamesPlayed % 2 === 0) {
+                console.log("if");
+                if (total % 2 === 0) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else {
+                console.log("else");
+                if (total % 2 === 0) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
+        };
+
+        emitPauseMove(roomName, pausePlayer());
     }
 
     function handleJoinGame(roomName) {
@@ -101,6 +117,8 @@ io.on("connection", (client) => {
         startGameInterval(roomName);
 
         emitPauseMove(roomName, 2);
+
+        console.log(state[roomName]);
     }
 
     function handleNewGame() {
@@ -115,6 +133,7 @@ io.on("connection", (client) => {
                 board: new Array(9),
                 player1Moves: 0,
                 player2Moves: 0,
+                gamesPlayed: 0,
             },
         });
 
@@ -214,8 +233,9 @@ function endGame(room) {
 }
 
 /**
- * Emit event to pause move for player.
- * @param {} player
+ *
+ * @param {String} room
+ * @param {Number} player
  */
 function emitPauseMove(room, player) {
     console.log({ player });
