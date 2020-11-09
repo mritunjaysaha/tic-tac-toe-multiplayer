@@ -44,7 +44,7 @@ io.on("connection", (client) => {
         endGame(roomName);
     }
 
-    function handlePlayAgain(player) {
+    function handlePlayAgain(player, gamesPlayed) {
         if (player.number === "1" || player.number === "2") {
             playAgainCount++;
         }
@@ -54,8 +54,11 @@ io.on("connection", (client) => {
                 board: new Array(9),
                 player1Moves: 0,
                 player2Moves: 0,
+                gamesPlayed: gamesPlayed,
             };
-
+            console.log("GAMES PLAYED", gamesPlayed, typeof gamesPlayed);
+            console.log(gamesPlayed % 2 === 0 ? 1 : 2);
+            emitPauseMove(player.roomName, gamesPlayed % 2 === 0 ? 2 : 1);
             startGameInterval(player.roomName);
             playAgainCount = 0;
         }
@@ -83,7 +86,26 @@ io.on("connection", (client) => {
 
         const total = player1Moves + player2Moves;
 
-        emitPauseMove(roomName, total % 2 === 0 ? 1 : 2);
+        const pausePlayer = () => {
+            console.log(state[roomName]);
+            if (state[roomName].gamesPlayed % 2 === 0) {
+                console.log("if");
+                if (total % 2 === 0) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else {
+                console.log("else");
+                if (total % 2 === 0) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
+        };
+
+        emitPauseMove(roomName, pausePlayer());
     }
 
     function handleJoinGame(roomName) {
@@ -111,6 +133,7 @@ io.on("connection", (client) => {
                 board: new Array(9),
                 player1Moves: 0,
                 player2Moves: 0,
+                gamesPlayed: 0,
             },
         });
 
@@ -215,6 +238,7 @@ function endGame(room) {
  * @param {Number} player
  */
 function emitPauseMove(room, player) {
+    console.log({ player });
     io.sockets.in(room).emit("pause", player);
 }
 

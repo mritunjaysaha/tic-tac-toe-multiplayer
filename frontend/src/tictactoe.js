@@ -53,12 +53,10 @@ export class TicTacToe extends Board {
             this.updateScore(winner);
         });
 
-        this.socket.on("pause", (player, joke) => {
-            console.log({ joke });
+        this.socket.on("pause", (player) => {
             if (player == this.player.number) {
                 this.pauseModal.style.display = "flex";
                 this.pauseModalpEl.innerText = player;
-                this.pauseModalJoke.innerText = joke;
             } else {
                 this.pauseModal.style.display = "none";
             }
@@ -108,12 +106,17 @@ export class TicTacToe extends Board {
             this.resultModal.style.display = "none";
 
             this.resetBoard();
-            this.socket.emit("playAgain", {
-                number: this.player.number,
-                roomName: this.player.roomName,
-            });
 
             this.gamesPlayed++;
+
+            this.socket.emit(
+                "playAgain",
+                {
+                    number: this.player.number,
+                    roomName: this.player.roomName,
+                },
+                this.gamesPlayed
+            );
         });
 
         // NO/exit button
