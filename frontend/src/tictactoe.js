@@ -29,7 +29,8 @@ export class TicTacToe extends Board {
         this.oFont = `<i class="uil uil-circle"></i>`;
 
         this.player = player;
-        this.xoro = this.player.number === "1" ? this.xFont : this.oFont;
+
+        this.gamesPlayed = 0;
 
         this.socket = socket;
 
@@ -64,6 +65,27 @@ export class TicTacToe extends Board {
         });
     }
 
+    userToken(data) {
+        console.log(this.player.number, typeof this.player.number);
+        if (this.gamesPlayed % 2 === 0) {
+            if (
+                (this.player.number === "1" && data === "1") ||
+                (this.player.number === "2" && data === "1")
+            ) {
+                return this.xFont;
+            }
+        } else {
+            if (
+                (this.player.number === "1" && data === "2") ||
+                (this.player.number === "2" && data === "2")
+            ) {
+                return this.xFont;
+            }
+        }
+
+        return this.oFont;
+    }
+
     bindEvents() {
         this.el.addEventListener("click", (e) => {
             const cell = e.target.dataset["cell"];
@@ -90,6 +112,8 @@ export class TicTacToe extends Board {
                 number: this.player.number,
                 roomName: this.player.roomName,
             });
+
+            this.gamesPlayed++;
         });
 
         // NO/exit button
@@ -108,7 +132,7 @@ export class TicTacToe extends Board {
 
     paint(data, cell) {
         const cellElement = document.querySelector(`div[data-cell='${cell}']`);
-        cellElement.innerHTML = data === "1" ? this.xFont : this.oFont;
+        cellElement.innerHTML = this.userToken(data);
     }
 
     updateScore(winner) {

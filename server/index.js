@@ -1,4 +1,4 @@
-const { makeId, getJoke } = require("./utils");
+const { makeId } = require("./utils");
 
 const http = require("http");
 const express = require("express");
@@ -6,7 +6,6 @@ const socket = require("socket.io");
 const cors = require("cors");
 
 const router = require("./router");
-const { stat } = require("fs");
 
 const app = express();
 const server = http.createServer(app);
@@ -41,7 +40,7 @@ io.on("connection", (client) => {
     client.on("playAgain", handlePlayAgain);
     client.on("endGame", handleEndGame);
 
-    function handleEndGame(roomName, socket) {
+    function handleEndGame(roomName) {
         endGame(roomName);
     }
 
@@ -60,6 +59,8 @@ io.on("connection", (client) => {
             startGameInterval(player.roomName);
             playAgainCount = 0;
         }
+
+        console.log(state[player.roomName]);
     }
 
     function handleMoves(cell, playerNumber, roomName) {
@@ -81,13 +82,6 @@ io.on("connection", (client) => {
         client.emit("updateBoard", JSON.stringify(state[roomName].board));
 
         const total = player1Moves + player2Moves;
-        console.log(
-            "player",
-            player1Moves,
-            player2Moves,
-            total % 2,
-            total % 2 === 0
-        );
 
         emitPauseMove(roomName, total % 2 === 0 ? 1 : 2);
     }
@@ -101,6 +95,8 @@ io.on("connection", (client) => {
         startGameInterval(roomName);
 
         emitPauseMove(roomName, 2);
+
+        console.log(state[roomName]);
     }
 
     function handleNewGame() {
@@ -219,11 +215,7 @@ function endGame(room) {
  * @param {Number} player
  */
 function emitPauseMove(room, player) {
-    console.log({ player });
-    const joke = getJoke();
-
-    console.log({ joke });
-    io.sockets.in(room).emit("pause", player, joke);
+    io.sockets.in(room).emit("pause", player);
 }
 
 io.on("disconnect", () => {
