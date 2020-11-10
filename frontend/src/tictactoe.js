@@ -93,27 +93,6 @@ export class TicTacToe extends Board {
         });
     }
 
-    userToken(data) {
-        console.log(this.player.number, typeof this.player.number);
-        if (this.gamesPlayed % 2 === 0) {
-            if (
-                (this.player.number === 1 && data === 1) ||
-                (this.player.number === 2 && data === 1)
-            ) {
-                return this.xFont;
-            }
-        } else {
-            if (
-                (this.player.number === 1 && data === 2) ||
-                (this.player.number === 2 && data === 2)
-            ) {
-                return this.xFont;
-            }
-        }
-
-        return this.oFont;
-    }
-
     bindEvents() {
         this.el.addEventListener("click", (e) => {
             const cell = e.target.dataset["cell"];
@@ -134,6 +113,8 @@ export class TicTacToe extends Board {
         // play again button
         this.playAgainBtn.addEventListener("click", () => {
             this.resultModal.style.display = "none";
+
+            this.gamesPlayed++;
 
             this.socket.emit(
                 "playAgain",
@@ -160,10 +141,31 @@ export class TicTacToe extends Board {
 
         // button stop next game
         this.askPlayAgainNoBtn.addEventListener("click", () => {
-            this.socket.emit("endGame", this.player);
+            this.socket.emit("endGame", this.player.roomName);
             this.askPlayAgainModal.style.display = "none";
             this.resultModal.style.display = "none";
         });
+    }
+
+    userToken(data) {
+        console.log(this.player.number, this.gamesPlayed);
+        if (this.gamesPlayed % 2 === 0) {
+            if (
+                (this.player.number === 1 && data === 1) ||
+                (this.player.number === 2 && data === 1)
+            ) {
+                return this.xFont;
+            }
+        } else {
+            if (
+                (this.player.number === 1 && data === 2) ||
+                (this.player.number === 2 && data === 2)
+            ) {
+                return this.xFont;
+            }
+        }
+
+        return this.oFont;
     }
 
     paintBoard(array) {
