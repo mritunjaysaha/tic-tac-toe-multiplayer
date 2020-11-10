@@ -20,10 +20,18 @@ export class TicTacToe extends Board {
 
         this.resultModalWinner = document.querySelector("#result-p");
         this.pauseModalpEl = document.querySelector("#pause-p");
+        this.askPlayAgainP = document.querySelector("#ask-play-again-p");
         this.pauseModalJoke = document.querySelector("#pause-p-joke");
+        this.askPlayAgainModal = document.querySelector(
+            "#ask-play-again-modal"
+        );
+        this.waitingModal = document.querySelector("#waiting-modal");
 
         this.playAgainBtn = document.querySelector("#btn-play-again");
         this.playNoBtn = document.querySelector("#btn-play-no");
+        this.askPlayAgainYesBtn = document.querySelector("#ask-play-again-yes");
+        this.askPlayAgainNoBtn = document.querySelector("#ask-play-again-no");
+        this.waitingP = document.querySelector("#waiting-p");
 
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
@@ -35,7 +43,10 @@ export class TicTacToe extends Board {
         this.socket = socket;
 
         this.bindEvents();
+        this.sockets();
+    }
 
+    sockets() {
         this.socket.on("gameState", (data) => {
             const gameState = JSON.parse(data);
 
@@ -61,21 +72,40 @@ export class TicTacToe extends Board {
                 this.pauseModal.style.display = "none";
             }
         });
+
+        this.socket.on("DoYouWantToPlayAgain", (playerNumber) => {
+            console.log(playerNumber, "wants to play again");
+
+            if (this.player.number !== playerNumber) {
+                this.askPlayAgainModal.style.display = "flex";
+                this.askPlayAgainP.innerText = `Player ${playerNumber} wants to play again`;
+            } else {
+                this.waitingModal.style.display = "flex";
+                this.waitingP.innerText = `waiting for player ${playerNumber} to accept`;
+            }
+        });
+
+        this.socket.on("startNewGame", (playerNumber) => {
+            if (this.player.number === playerNumber) {
+                this.waitingModal.style.display = "none";
+            }
+            this.resetBoard();
+        });
     }
 
     userToken(data) {
         console.log(this.player.number, typeof this.player.number);
         if (this.gamesPlayed % 2 === 0) {
             if (
-                (this.player.number === "1" && data === "1") ||
-                (this.player.number === "2" && data === "1")
+                (this.player.number === 1 && data === 1) ||
+                (this.player.number === 2 && data === 1)
             ) {
                 return this.xFont;
             }
         } else {
             if (
-                (this.player.number === "1" && data === "2") ||
-                (this.player.number === "2" && data === "2")
+                (this.player.number === 1 && data === 2) ||
+                (this.player.number === 2 && data === 2)
             ) {
                 return this.xFont;
             }
@@ -105,10 +135,6 @@ export class TicTacToe extends Board {
         this.playAgainBtn.addEventListener("click", () => {
             this.resultModal.style.display = "none";
 
-            this.resetBoard();
-
-            this.gamesPlayed++;
-
             this.socket.emit(
                 "playAgain",
                 {
@@ -122,6 +148,21 @@ export class TicTacToe extends Board {
         // NO/exit button
         this.playNoBtn.addEventListener("click", () => {
             this.socket.emit("endGame", this.player.roomName);
+        });
+
+        // button to start next game
+        this.askPlayAgainYesBtn.addEventListener("click", () => {
+            this.gamesPlayed++;
+            this.socket.emit("startNextGame", this.player, this.gamesPlayed);
+            this.askPlayAgainModal.style.display = "none";
+            this.resultModal.style.display = "none";
+        });
+
+        // button stop next game
+        this.askPlayAgainNoBtn.addEventListener("click", () => {
+            this.socket.emit("endGame", this.player);
+            this.askPlayAgainModal.style.display = "none";
+            this.resultModal.style.display = "none";
         });
     }
 
@@ -139,14 +180,14 @@ export class TicTacToe extends Board {
     }
 
     updateScore(winner) {
-        if (winner === "1") {
+        if (winner === 1) {
             this.player1Score++;
             this.player1ScoreEl.innerText =
                 this.player1Score < 10
                     ? `0${this.player1Score}`
                     : this.player1Score;
         }
-        if (winner === "2") {
+        if (winner === 2) {
             this.player2Score++;
             this.player2ScoreEl.innerText =
                 this.player2Score < 10
