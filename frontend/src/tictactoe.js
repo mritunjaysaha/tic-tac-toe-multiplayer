@@ -39,6 +39,13 @@ export class TicTacToe extends Board {
             "#initial-waiting-modal-p"
         );
 
+        // tokens
+        this.player1Token = document.querySelector("#player-1-token");
+        this.player2Token = document.querySelector("#player-2-token");
+
+        console.log(this.player1Token, this.player2Token);
+
+        // fonts
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
 
@@ -49,6 +56,7 @@ export class TicTacToe extends Board {
 
         this.bindEvents();
         this.sockets();
+        this.setToken();
     }
 
     sockets() {
@@ -105,6 +113,7 @@ export class TicTacToe extends Board {
                 this.waitingModal.style.display = "none";
             }
             this.resetBoard();
+            this.setToken();
         });
 
         /**
@@ -236,5 +245,17 @@ export class TicTacToe extends Board {
         this.resultModalWinner.innerText = `player ${winner}`;
 
         this.pauseModal.style.display = "none";
+    }
+
+    setToken() {
+        const xFont = `<i class="uil uil-times-circle token"></i>`;
+        const oFont = `<i class="uil uil-circle token"></i>`;
+        if (this.gamesPlayed % 2 === 0) {
+            this.player1Token.innerHTML = xFont;
+            this.player2Token.innerHTML = oFont;
+        } else {
+            this.player1Token.innerHTML = oFont;
+            this.player2Token.innerHTML = xFont;
+        }
     }
 }

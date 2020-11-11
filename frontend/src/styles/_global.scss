@@ -8,6 +8,7 @@ html {
 *::after,
 *::before {
     box-sizing: inherit;
+    margin: 0;
 }
 
 body {
@@ -30,12 +31,4 @@ i {
     @include respond(mobile) {
         font-size: $xo-fs-sm;
     }
-}
-
-.game-section {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
 }
