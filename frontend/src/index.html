@@ -9,7 +9,7 @@
 </head>
 
 <body>
-
+    <!-- Welcome section -->
     <section id="join-game-section">
         <div>
             <button id="btn-new-game">New Game</button>
@@ -24,12 +24,6 @@
             </form>
         </div>
     </section>
-
-    <!-- Game code section -->
-    <section id="section-game-code-p1" style="display: none;">
-        <h1>Your Game Code is: <span id="game-code"></span></h1>
-    </section>
-
 
     <!--Score board section  -->
     <section class="game-section" id="game-section" style="display: none;">
@@ -51,8 +45,8 @@
             </section>
         </header>
         <section id="board" class="section-board-container"></section>
-
     </section>
+
     <footer class="footer">
         <p>Made by <a target="_blank" rel="noopener noreferrer" href="https://mritunjaysaha.netlify.app">Mritunjay</a>
         </p>
@@ -98,8 +92,11 @@
     <!-- Initial waiting modal for the 1st user -->
     <section class="modal" id="initial-waiting-modal">
         <article>
-            <p class="modal-p-text" id="waiting-p">
-                Waiting for player 2 to join
+            <p class="modal-p-text text-transform-none">
+                Share the room name with your friend
+                <br>
+                <br>
+                Room Name: <span class="span-blue" id="initial-waiting-modal-p"></span>
             </p>
         </article>
     </section>

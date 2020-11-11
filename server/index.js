@@ -235,22 +235,36 @@ function emitPauseMove(room, player) {
     io.sockets.in(room).emit("pause", player);
 }
 
+/**
+ * emit event to show the modal if they want
+ * to play another game
+ * @param {[Object object]} player
+ */
 function emitWantToPlayAgain(player) {
     io.sockets.in(player.roomName).emit("DoYouWantToPlayAgain", player.number);
 }
 
+/**
+ *
+ * @param {[Object object]} player
+ */
 function emitStartNewGame(player) {
     io.sockets
         .in(player.roomName)
         .emit("startNewGame", player.number === 1 ? 2 : 1);
 }
 
+/**
+ *
+ * @param {String} room
+ */
 function emitInitialWaitingScreen(room) {
-    console.log("initial waiting");
     io.sockets.in(room).emit("initialWaitingScreen");
 }
 
-io.on("disconnect", () => {});
+io.on("disconnect", () => {
+    console.log("DISCONNECTED");
+});
 
 const PORT = process.env.PORT || 4000;
 

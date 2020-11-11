@@ -35,6 +35,9 @@ export class TicTacToe extends Board {
         this.askPlayAgainYesBtn = document.querySelector("#ask-play-again-yes");
         this.askPlayAgainNoBtn = document.querySelector("#ask-play-again-no");
         this.waitingP = document.querySelector("#waiting-p");
+        this.initialWaitingModalP = document.querySelector(
+            "#initial-waiting-modal-p"
+        );
 
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
@@ -49,6 +52,9 @@ export class TicTacToe extends Board {
     }
 
     sockets() {
+        /**
+         * get the game state and re-paint the board
+         */
         this.socket.on("gameState", (data) => {
             const gameState = JSON.parse(data);
 
@@ -57,15 +63,18 @@ export class TicTacToe extends Board {
             });
         });
 
+        /**
+         * show the modal to start a new game and update the score
+         */
         this.socket.on("gameOver", (winner) => {
-            console.log({ winner });
-            if (winner === "draw") {
-                alert("Draw");
-            }
             this.showModal(winner);
             this.updateScore(winner);
         });
 
+        /**
+         * Pause the moves for the user, if it is not
+         * their turn to make the move
+         */
         this.socket.on("pause", (player) => {
             if (this.initialWaitingScreenLoaded) {
                 this.initialWaitingModal.style.display = "none";
@@ -78,6 +87,9 @@ export class TicTacToe extends Board {
             }
         });
 
+        /**
+         * Show the play again modal
+         */
         this.socket.on("DoYouWantToPlayAgain", (playerNumber) => {
             if (this.player.number !== playerNumber) {
                 this.askPlayAgainModal.style.display = "flex";
@@ -95,9 +107,22 @@ export class TicTacToe extends Board {
             this.resetBoard();
         });
 
+        /**
+         * show the waiting screen while the second player uses
+         * the game code to join the game.
+         */
         this.socket.on("initialWaitingScreen", () => {
             this.initialWaitingModal.style.display = "flex";
             this.initialWaitingScreenLoaded = true;
+        });
+
+        /**
+         * show the game code to the first user
+         */
+        this.socket.on("gameCode", (roomName) => {
+            this.player.roomName = roomName;
+
+            this.initialWaitingModalP.innerText = roomName;
         });
     }
 
