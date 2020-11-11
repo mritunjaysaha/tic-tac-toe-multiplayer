@@ -26,6 +26,9 @@ export class TicTacToe extends Board {
             "#ask-play-again-modal"
         );
         this.waitingModal = document.querySelector("#waiting-modal");
+        this.initialWaitingModal = document.querySelector(
+            "#initial-waiting-modal"
+        );
 
         this.playAgainBtn = document.querySelector("#btn-play-again");
         this.playNoBtn = document.querySelector("#btn-play-no");
@@ -37,10 +40,9 @@ export class TicTacToe extends Board {
         this.oFont = `<i class="uil uil-circle"></i>`;
 
         this.player = player;
-
         this.gamesPlayed = 0;
-
         this.socket = socket;
+        this.initialWaitingScreenLoaded = false;
 
         this.bindEvents();
         this.sockets();
@@ -65,6 +67,9 @@ export class TicTacToe extends Board {
         });
 
         this.socket.on("pause", (player) => {
+            if (this.initialWaitingScreenLoaded) {
+                this.initialWaitingModal.style.display = "none";
+            }
             if (player == this.player.number) {
                 this.pauseModal.style.display = "flex";
                 this.pauseModalpEl.innerText = player;
@@ -74,8 +79,6 @@ export class TicTacToe extends Board {
         });
 
         this.socket.on("DoYouWantToPlayAgain", (playerNumber) => {
-            console.log(playerNumber, "wants to play again");
-
             if (this.player.number !== playerNumber) {
                 this.askPlayAgainModal.style.display = "flex";
                 this.askPlayAgainP.innerText = `Player ${playerNumber} wants to play again`;
@@ -90,6 +93,11 @@ export class TicTacToe extends Board {
                 this.waitingModal.style.display = "none";
             }
             this.resetBoard();
+        });
+
+        this.socket.on("initialWaitingScreen", () => {
+            this.initialWaitingModal.style.display = "flex";
+            this.initialWaitingScreenLoaded = true;
         });
     }
 

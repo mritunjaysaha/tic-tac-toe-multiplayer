@@ -128,6 +128,8 @@ io.on("connection", (client) => {
 
         client.join(roomName);
         client.number = 1;
+
+        emitInitialWaitingScreen(roomName);
     }
 });
 
@@ -140,10 +142,6 @@ io.on("connection", (client) => {
  */
 
 function checkWinner(arrBoard, player1Moves, player2Moves) {
-    if (player1Moves + player2Moves === 9) {
-        return "draw";
-    }
-
     let winner = null;
 
     winningCombinations.forEach((combo) => {
@@ -159,6 +157,12 @@ function checkWinner(arrBoard, player1Moves, player2Moves) {
             winner = arrBoard[combo[0]];
         }
     });
+
+    if (winner !== 1 || winner !== 2) {
+        if (player1Moves + player2Moves === 9) {
+            return "draw";
+        }
+    }
     return winner;
 }
 
@@ -239,6 +243,11 @@ function emitStartNewGame(player) {
     io.sockets
         .in(player.roomName)
         .emit("startNewGame", player.number === 1 ? 2 : 1);
+}
+
+function emitInitialWaitingScreen(room) {
+    console.log("initial waiting");
+    io.sockets.in(room).emit("initialWaitingScreen");
 }
 
 io.on("disconnect", () => {});
