@@ -10,8 +10,7 @@ export class App {
         this.inputJoinGame = document.getElementById("input-join-game");
         this.btnJoinGame = document.getElementById("btn-join-game");
 
-        // this.socket = io("https://ttt-multiplayer-server.herokuapp.com/");
-        this.socket = io("http://localhost:4000");
+        this.socket = io("https://ttt-multiplayer-server.herokuapp.com/");
         this.player = {
             number: "",
         };
