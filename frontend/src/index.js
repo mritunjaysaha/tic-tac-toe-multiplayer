@@ -51,7 +51,6 @@ export class App {
     init() {
         this.joinGameSection.style.display = "none";
         this.gameSection.style.display = "flex";
-        console.log("here", this.player);
         new TicTacToe("#board", this.player, this.socket);
         this.gameActive = true;
     }

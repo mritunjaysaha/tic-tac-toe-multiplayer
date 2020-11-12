@@ -43,8 +43,6 @@ export class TicTacToe extends Board {
         this.player1Token = document.querySelector("#player-1-token");
         this.player2Token = document.querySelector("#player-2-token");
 
-        console.log(this.player1Token, this.player2Token);
-
         // fonts
         this.xFont = `<i class="uil uil-times-circle"></i>`;
         this.oFont = `<i class="uil uil-circle"></i>`;
