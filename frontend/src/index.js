@@ -5,30 +5,16 @@ export class App {
     constructor() {
         this.joinGameSection = document.getElementById("join-game-section");
         this.gameSection = document.getElementById("game-section");
-        this.sectionGameCodeP1 = document.getElementById(
-            "section-game-code-p1"
-        );
+
         this.btnNewGameP1 = document.getElementById("btn-new-game");
         this.inputJoinGame = document.getElementById("input-join-game");
         this.btnJoinGame = document.getElementById("btn-join-game");
-        this.gameCodeDisplay = document.getElementById("game-code");
 
         this.socket = io("https://ttt-multiplayer-server.herokuapp.com/");
-        // this.socket = io("http://localhost:4000");
         this.player = {
             number: "",
-            roomName: "",
         };
         this.gameActive = false;
-
-        this.socket.on("gameCode", (roomName) => {
-            this.gameCodeDisplay.innerText = roomName;
-            this.player.roomName = roomName;
-        });
-
-        this.socket.on("end", () => {
-            window.location.reload();
-        });
 
         this.start();
         this.bindEvents();
@@ -36,11 +22,14 @@ export class App {
 
     start() {
         this.socket.on("checkConnection", (message) => console.log(message));
+        this.socket.on("end", () => {
+            window.location.reload();
+        });
     }
 
     bindEvents() {
         this.btnNewGameP1.addEventListener("click", () => {
-            this.player.number = "1";
+            this.player.number = 1;
             this.joinGameSection.style.display = "none";
 
             this.socket.emit("newGame");
@@ -49,11 +38,10 @@ export class App {
         });
 
         this.btnJoinGame.addEventListener("click", () => {
-            this.player.number = "2";
+            this.player.number = 2;
             const roomName = this.inputJoinGame.value;
             console.log({ roomName });
             this.player.roomName = roomName;
-            this.gameCodeDisplay.innerText = roomName;
             this.socket.emit("joinGame", roomName);
 
             this.init();
@@ -61,8 +49,6 @@ export class App {
     }
 
     init() {
-        this.sectionGameCodeP1.style.display = "block";
-
         this.joinGameSection.style.display = "none";
         this.gameSection.style.display = "flex";
         console.log("here", this.player);

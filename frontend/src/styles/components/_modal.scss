@@ -28,7 +28,6 @@
 
         button {
             width: 10em;
-
             text-align: center;
             vertical-align: center;
             text-transform: uppercase;
@@ -39,22 +38,36 @@
             border-radius: $border-radius;
             color: $ScoreBg;
             padding: 0.4rem 1.2rem;
+
+            &:focus {
+                outline: none;
+            }
         }
     }
 
     .modal-p-text {
         text-transform: uppercase;
-        font-size: 1.5em;
+        font-size: 1em;
         letter-spacing: 0.2em;
         margin: 0;
         color: $DarkText;
+        text-align: center;
+        padding: 0 0.8em;
     }
 
-    #btn-play-again {
+    .button-blue {
         background: $ScoreText;
     }
 
-    #btn-play-no {
+    .button-red {
         background: #f00;
+    }
+
+    .text-transform-none {
+        text-transform: none;
+    }
+
+    .span-blue {
+        color: $ScoreText;
     }
 }

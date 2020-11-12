@@ -29,13 +29,17 @@
             text-transform: uppercase;
             color: $ScoreText;
             font-weight: 700;
-            letter-spacing: 0.2em;
-            margin: 0;
+            letter-spacing: 0.1em;
         }
+
+        .token {
+            color: $red;
+            font-size: inherit;
+        }
+
         .score {
             font-weight: 700;
             color: $DarkText;
-            margin: 0;
         }
 
         @include respond(mobile) {

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-
+    <!--Page-1: Welcome page section -->
     <section id="join-game-section">
         <div>
             <button id="btn-new-game">New Game</button>
@@ -25,20 +25,16 @@
         </div>
     </section>
 
-    <!-- Game code section -->
-    <section id="section-game-code-p1" style="display: none;">
-        <h1>Your Game Code is: <span id="game-code"></span></h1>
-    </section>
-
-
     <!--Score board section  -->
     <section class="game-section" id="game-section" style="display: none;">
         <header class="header-score-container">
             <!-- player-1 score section -->
             <section class="header-score-contents">
                 <p class="score-text-player">Player 1</p>
+                <p id="player-1-token"></p>
                 <h3 class="score" id="player1-score">00</h3>
             </section>
+            <!-- logo -->
             <section class="header-score-contents logo">
                 <p>tic</p>
                 <p>tac</p>
@@ -47,12 +43,13 @@
             <!-- player-2 score section -->
             <section class="header-score-contents">
                 <p class="score-text-player">Player 2</p>
+                <p id="player-2-token"></p>
                 <h3 class="score" id="player2-score">00</h3>
             </section>
         </header>
         <section id="board" class="section-board-container"></section>
-
     </section>
+
     <footer class="footer">
         <p>Made by <a target="_blank" rel="noopener noreferrer" href="https://mritunjaysaha.netlify.app">Mritunjay</a>
         </p>
@@ -65,8 +62,8 @@
         <article>
             <h3>Winner is</h3>
             <p class="modal-p-text" id="result-p"></p>
-            <button id="btn-play-again">play again</button>
-            <button id="btn-play-no">exit</button>
+            <button class="button-blue" id="btn-play-again">play again</button>
+            <button class="button-red" id="btn-play-no">exit</button>
         </article>
     </section>
 
@@ -76,6 +73,34 @@
             <h3>pause</h3>
             <p class="modal-p-text" id="pause-p"></p>
             <p class="modal-p-text joke" id="pause-p-joke"></p>
+        </article>
+    </section>
+
+    <!-- Want to play again modal -->
+    <section class="modal" id="ask-play-again-modal">
+        <article>
+            <p class="modal-p-text" id="ask-play-again-p"></p>
+            <button id="ask-play-again-yes" class="button-blue">yes</button>
+            <button id="ask-play-again-no" class="button-red">no</button>
+        </article>
+    </section>
+
+    <!-- waiting for other player modal -->
+    <section class="modal" id="waiting-modal">
+        <article>
+            <p class="modal-p-text" id="waiting-p"></p>
+        </article>
+    </section>
+
+    <!-- Initial waiting modal for the 1st user -->
+    <section class="modal" id="initial-waiting-modal">
+        <article>
+            <p class="modal-p-text text-transform-none">
+                Share the room name with your friend
+                <br>
+                <br>
+                Room Name: <span class="span-blue" id="initial-waiting-modal-p"></span>
+            </p>
         </article>
     </section>
 
