@@ -104,7 +104,9 @@ export class TicTacToe extends Board {
                 this.askPlayAgainP.innerText = `Player ${playerNumber} wants to play again`;
             } else {
                 this.waitingModal.style.display = "flex";
-                this.waitingP.innerText = `waiting for player ${playerNumber} to accept`;
+                this.waitingP.innerText = `waiting for player ${
+                    playerNumber === 1 ? 2 : 1
+                } to accept`;
             }
         });
 
