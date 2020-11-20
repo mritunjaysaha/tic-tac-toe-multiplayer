@@ -9,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300&display=swap">
-    <!-- <link rel="preload" href="./styles/main.scss" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="./styles/main.scss"></noscript> -->
+
 </head>
 
 <body>
@@ -25,11 +23,11 @@
                 <hr>
             </div>
             <form>
-                <label for="join-game-button">
-                    <input id="input-join-game" placeholder="Enter Game code" type="text">
-                </label>
+                <input id="input-join-game" name="input-join-game" placeholder="Enter Game code" type="text">
+                <label for="input-join-game">
+                    <button type="button" id="btn-join-game">Join Game</button>
 
-                <button type="button" id="btn-join-game">Join Game</button>
+                </label>
             </form>
         </div>
     </section>
