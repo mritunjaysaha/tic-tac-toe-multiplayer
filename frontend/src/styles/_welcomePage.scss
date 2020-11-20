@@ -41,6 +41,7 @@
             padding: 1em 0;
             width: 100%;
             justify-content: space-between;
+            align-items: center;
             background: none;
             hr {
                 height: 1px;
@@ -52,7 +53,6 @@
             p {
                 text-transform: uppercase;
                 color: $ScoreBg;
-                margin: 0;
             }
         }
     }
