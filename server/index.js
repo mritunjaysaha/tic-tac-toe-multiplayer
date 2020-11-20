@@ -29,41 +29,36 @@ const winningCombinations = [
     [2, 4, 6],
 ];
 
-let playAgainCount = 0;
-
 io.on("connection", (client) => {
     client.emit("checkConnection", "connected to server");
     client.on("newGame", handleNewGame);
     client.on("joinGame", handleJoinGame);
-
     client.on("moves", handleMoves);
     client.on("playAgain", handlePlayAgain);
     client.on("endGame", handleEndGame);
+    client.on("startNextGame", handleStartNextGame);
 
-    function handleEndGame(roomName) {
-        endGame(roomName);
+    function handleStartNextGame(player, gamesPlayed) {
+        state[player.roomName] = {
+            isStarted: true,
+            board: new Array(9),
+            player1Moves: 0,
+            player2Moves: 0,
+            gamesPlayed: gamesPlayed,
+        };
+        emitStartNewGame(player);
+        emitPauseMove(player.roomName, gamesPlayed % 2 === 0 ? 2 : 1);
+        startGameInterval(player.roomName);
     }
 
-    function handlePlayAgain(player, gamesPlayed) {
-        if (player.number === "1" || player.number === "2") {
-            playAgainCount++;
-        }
-        if (playAgainCount === 2) {
-            state[player.roomName] = {
-                isStarted: playAgainCount === 2,
-                board: new Array(9),
-                player1Moves: 0,
-                player2Moves: 0,
-                gamesPlayed: gamesPlayed,
-            };
-            console.log("GAMES PLAYED", gamesPlayed, typeof gamesPlayed);
-            console.log(gamesPlayed % 2 === 0 ? 1 : 2);
-            emitPauseMove(player.roomName, gamesPlayed % 2 === 0 ? 2 : 1);
-            startGameInterval(player.roomName);
-            playAgainCount = 0;
-        }
+    function handleEndGame(roomName) {
+        emitEndGame(roomName);
+    }
 
-        console.log(state[player.roomName]);
+    function handlePlayAgain(player) {
+        if (player.number === 1 || player.number === 2) {
+            emitWantToPlayAgain(player);
+        }
     }
 
     function handleMoves(cell, playerNumber, roomName) {
@@ -73,7 +68,7 @@ io.on("connection", (client) => {
         if (!state[roomName].board[cell]) {
             state[roomName].board[cell] = playerNumber;
 
-            if (playerNumber === "1") {
+            if (playerNumber === 1) {
                 state[roomName].player1Moves++;
             } else {
                 state[roomName].player2Moves++;
@@ -87,16 +82,13 @@ io.on("connection", (client) => {
         const total = player1Moves + player2Moves;
 
         const pausePlayer = () => {
-            console.log(state[roomName]);
             if (state[roomName].gamesPlayed % 2 === 0) {
-                console.log("if");
                 if (total % 2 === 0) {
                     return 1;
                 } else {
                     return 2;
                 }
             } else {
-                console.log("else");
                 if (total % 2 === 0) {
                     return 2;
                 } else {
@@ -117,15 +109,12 @@ io.on("connection", (client) => {
         startGameInterval(roomName);
 
         emitPauseMove(roomName, 2);
-
-        console.log(state[roomName]);
     }
 
     function handleNewGame() {
         const roomName = makeId();
 
         clientRooms[client.id] = roomName;
-        console.log("client.id", client.id);
         client.emit("gameCode", roomName);
         Object.assign(state, {
             [roomName]: {
@@ -139,6 +128,8 @@ io.on("connection", (client) => {
 
         client.join(roomName);
         client.number = 1;
+
+        emitInitialWaitingScreen(roomName);
     }
 });
 
@@ -151,25 +142,27 @@ io.on("connection", (client) => {
  */
 
 function checkWinner(arrBoard, player1Moves, player2Moves) {
-    if (player1Moves + player2Moves === 9) {
-        return "draw";
-    }
-
     let winner = null;
 
     winningCombinations.forEach((combo) => {
         if (
             (arrBoard &&
-                arrBoard[combo[0]] === "1" &&
-                arrBoard[combo[1]] === "1" &&
-                arrBoard[combo[2]] === "1") ||
-            (arrBoard[combo[0]] === "2" &&
-                arrBoard[combo[1]] === "2" &&
-                arrBoard[combo[2]] === "2")
+                arrBoard[combo[0]] === 1 &&
+                arrBoard[combo[1]] === 1 &&
+                arrBoard[combo[2]] === 1) ||
+            (arrBoard[combo[0]] === 2 &&
+                arrBoard[combo[1]] === 2 &&
+                arrBoard[combo[2]] === 2)
         ) {
             winner = arrBoard[combo[0]];
         }
     });
+
+    if (winner !== 1 || winner !== 2) {
+        if (player1Moves + player2Moves === 9) {
+            return "draw";
+        }
+    }
     return winner;
 }
 
@@ -228,22 +221,49 @@ function emitGameOver(room, winner) {
  * Emit end event to all the users in the room.
  * @param {String} room
  */
-function endGame(room) {
+function emitEndGame(room) {
     io.sockets.in(room).emit("end");
+}
+
+/**
+ * Emit pause event to the frontend to block the moves of
+ * one of the user.
+ * @param {String} room
+ * @param {Number} player
+ */
+function emitPauseMove(room, player) {
+    io.sockets.in(room).emit("pause", player);
+}
+
+/**
+ * emit event to show the modal if they want
+ * to play another game
+ * @param {[Object object]} player
+ */
+function emitWantToPlayAgain(player) {
+    io.sockets.in(player.roomName).emit("DoYouWantToPlayAgain", player.number);
+}
+
+/**
+ *
+ * @param {[Object object]} player
+ */
+function emitStartNewGame(player) {
+    io.sockets
+        .in(player.roomName)
+        .emit("startNewGame", player.number === 1 ? 2 : 1);
 }
 
 /**
  *
  * @param {String} room
- * @param {Number} player
  */
-function emitPauseMove(room, player) {
-    console.log({ player });
-    io.sockets.in(room).emit("pause", player);
+function emitInitialWaitingScreen(room) {
+    io.sockets.in(room).emit("initialWaitingScreen");
 }
 
 io.on("disconnect", () => {
-    console.log("user has left");
+    console.log("DISCONNECTED");
 });
 
 const PORT = process.env.PORT || 4000;

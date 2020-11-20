@@ -21,7 +21,7 @@
         border-radius: $border-radius;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         font-size: 1.5em;
 
@@ -29,13 +29,19 @@
             text-transform: uppercase;
             color: $ScoreText;
             font-weight: 700;
-            letter-spacing: 0.2em;
-            margin: 0;
+            letter-spacing: 0.1em;
+            padding-bottom: 0.4em;
         }
+
+        .token {
+            color: $red;
+            font-size: inherit;
+            margin-top: 1em;
+        }
+
         .score {
             font-weight: 700;
             color: $DarkText;
-            margin: 0;
         }
 
         @include respond(mobile) {
