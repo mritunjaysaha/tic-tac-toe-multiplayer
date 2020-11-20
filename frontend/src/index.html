@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300&display=swap">
+    <!-- <link rel="preload" href="./styles/main.scss" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="./styles/main.scss"></noscript> -->
 </head>
 
 <body>
@@ -19,8 +25,9 @@
                 <hr>
             </div>
             <form>
-                <label for="join-game-button"> </label>
-                <input id="input-join-game" placeholder="Enter Game code" type="text">
+                <label for="join-game-button">
+                    <input id="input-join-game" placeholder="Enter Game code" type="text">
+                </label>
 
                 <button type="button" id="btn-join-game">Join Game</button>
             </form>
@@ -28,7 +35,7 @@
     </section>
 
     <!--Score board section  -->
-    <section class="game-section" id="game-section" style="display: none;">
+    <section class="game-section" id="game-section">
         <header class="header-score-container">
             <!-- player-1 score section -->
             <section class="header-score-contents">
@@ -106,7 +113,7 @@
         </article>
     </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 </body>
 
 </html>
