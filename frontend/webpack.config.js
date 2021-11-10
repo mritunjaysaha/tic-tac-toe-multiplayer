@@ -14,15 +14,6 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
             module: {
                 rules: [
                     {
-                        test: /\.html$/,
-                        use: [
-                            {
-                                loader: "html-loader",
-                                options: { minimize: true },
-                            },
-                        ],
-                    },
-                    {
                         test: /\.jpe?g$/,
                         use: [
                             {
@@ -39,20 +30,11 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
                     },
                 ],
             },
-            optimization: {
-                minimize: true,
-                minimizer: [new CssMinimizerPlugin()],
-            },
             output: {
                 filename: "bundle.js",
+                chunkFilename: "[name].lazy-chunk.js",
             },
-            plugins: [
-                new HtmlWebpackPlugin({
-                    template: "./src/index.html",
-                    filename: "./index.html",
-                }),
-                new webpack.ProgressPlugin(),
-            ],
+            plugins: [new HtmlWebpackPlugin(), new webpack.ProgressPlugin()],
         },
         modeConfig(mode),
         presetConfig({ mode, presets })
